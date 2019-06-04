@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"html/template"
 	"io/ioutil"
+	"net/url"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -64,7 +65,18 @@ func main() {
 	http.HandleFunc("/projects/oak", WriteTemplate(nil, "construction"))
 	http.HandleFunc("/projects/geva", WriteTemplate(nil, "construction"))
 	http.HandleFunc("/index", WriteTemplate(struct{ Pages []Page }{pages}, "home"))
+	http.HandleFunc("/", LocalRedirect("index"))
 	appengine.Main()
+}
+
+func LocalRedirect(path string) func(w http.ResponseWriter, req *http.Request) {
+	return func(w http.ResponseWriter, req *http.Request) {
+		newURL := &url.URL{}
+		newURL.Scheme = req.URL.Scheme
+		newURL.Host = req.URL.Host
+		newURL.Path = path
+		http.Redirect(w, req, newURL.String(), http.StatusMovedPermanently)
+	}
 }
 
 func WriteTemplate(inject interface{}, tmplName string) func(w http.ResponseWriter, req *http.Request) {
