@@ -7,9 +7,9 @@
         {{range .Pages}}
             {{if .SubPages}} <h3>{{.Name}}</h3> {{end}}
             {{range .SubPages}} 
-                <h4 href="{{.Link}}">{{.Name}}</h4>
+                <a href="{{.Link}}">{{.Name}}</a>
             {{else}}
-                <h3 href="{{.Link}}">{{.Name}}</h3>
+                <a href="{{.Link}}">{{.Name}}</a>
             {{end}}
         {{end}}
     </body>
