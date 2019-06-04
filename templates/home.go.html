@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <title>200sc.dev</title>
+    </head>
+    <body>
+        <h2>200sc.dev</h2>
+        {{range .Pages}}
+            {{if .SubPages}} <h3>{{.Name}}</h3> {{end}}
+            {{range .SubPages}} 
+                <h4 href="{{.Link}}">{{.Name}}</h4>
+            {{else}}
+                <h3 href="{{.Link}}">{{.Name}}</h3>
+            {{end}}
+        {{end}}
+    </body>
+</html>
