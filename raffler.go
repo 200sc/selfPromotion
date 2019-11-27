@@ -31,14 +31,7 @@ func Raffler(api *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "text")
 			w.Write([]byte(r.Challenge))
 		}
-		if eventsAPIEvent.Type == slackevents.CallbackEvent {
-			innerEvent := eventsAPIEvent.InnerEvent
-			fmt.Println("Inner event:", innerEvent)
-			fmt.Println("URL:", r.RequestURI)
-			switch ev := innerEvent.Data.(type) {
-			case *slackevents.AppMentionEvent:
-				api.PostMessage(ev.Channel, slack.MsgOptionText("Yes, hello.", false))
-			}
-		}
+		fmt.Println("URL:", r.RequestURI)
+		fmt.Println("Type:", eventsAPIEvent.Type)
 	}
 }
