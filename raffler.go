@@ -2,10 +2,10 @@ package main
 
 import (
 	"bytes"
-	"os"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/nlopes/slack"
 	"github.com/nlopes/slack/slackevents"
@@ -34,6 +34,7 @@ func Raffler(api *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 		if eventsAPIEvent.Type == slackevents.CallbackEvent {
 			innerEvent := eventsAPIEvent.InnerEvent
 			fmt.Println("Inner event:", innerEvent)
+			fmt.Println("URL:", r.RequestURI)
 			switch ev := innerEvent.Data.(type) {
 			case *slackevents.AppMentionEvent:
 				api.PostMessage(ev.Channel, slack.MsgOptionText("Yes, hello.", false))
