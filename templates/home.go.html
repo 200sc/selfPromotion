@@ -1,8 +1,7 @@
+{{define "home"}}
 <html>
-    <head>
-        <title>200sc.dev</title>
-    </head>
-    <body>
+    {{ template "header" .}}
+    <body id="body">
         <h2>200sc.dev</h2>
         {{range .Pages}}
             {{if .SubPages}} <h3>{{.Name}}</h3> {{end}}
@@ -12,5 +11,7 @@
                 <a href="{{.Link}}">{{.Name}}</a>
             {{end}}
         {{end}}
+        {{ template "footer" .}}
     </body>
 </html>
+{{end}}

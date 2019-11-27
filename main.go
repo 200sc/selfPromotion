@@ -2,9 +2,7 @@ package main
 
 import (
 	"net/http"
-
-	"google.golang.org/appengine"
-
+	"os"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -12,6 +10,9 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"google.golang.org/appengine"
+	"github.com/nlopes/slack"
 )
 
 type Page struct {
@@ -24,6 +25,7 @@ func main() {
 	// Site design:
 	// Home
 	// - Blog
+	// - - Answers (list questions and answers you've heard / made / found in deep dive explanation)
 	// - Games
 	// - Contact
 	// - Resume
@@ -66,7 +68,17 @@ func main() {
 	http.HandleFunc("/projects/geva", WriteTemplate(nil, "construction"))
 	http.HandleFunc("/index", WriteTemplate(struct{ Pages []Page }{pages}, "home"))
 	http.HandleFunc("/", LocalRedirect("index"))
-	appengine.Main()
+
+	client := slack.New(os.Getenv("SLACK_API_TOKEN"))
+
+	http.HandleFunc("/raffler", Raffler(client))
+	if os.Getenv("IN_APP_ENGINE") != "" {
+		fmt.Println("Running in app engine")
+		appengine.Main()
+	} else {
+		fmt.Println("Running on port 9092")
+		http.ListenAndServe(":9092", nil)
+	}
 }
 
 func LocalRedirect(path string) func(w http.ResponseWriter, req *http.Request) {
@@ -83,7 +95,7 @@ func WriteTemplate(inject interface{}, tmplName string) func(w http.ResponseWrit
 	return func(w http.ResponseWriter, req *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		tmpl := templates[tmplName+".go.html"]
-		err := tmpl.Execute(w, inject)
+		err := tmpl.ExecuteTemplate(w, tmplName, inject)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -120,7 +132,7 @@ func loadTemplates(container string) error {
 		if !strings.HasSuffix(name, ".go.html") {
 			continue
 		}
-		templates[name], err = template.ParseFiles(filepath.Join(container, name))
+		templates[name], err = template.ParseFiles(filepath.Join(container, name), filepath.Join(container, "footer.go.html"), filepath.Join(container, "header.go.html"))
 		if err != nil {
 			fmt.Println("Error decoding html template", name, ":", err)
 		}
