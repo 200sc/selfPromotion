@@ -117,19 +117,15 @@ func init() {
 
 func loadTemplates(container string) error {
 	// Read the local templates directory to find .go.html files
-	fs, err := ioutil.ReadDir(container)
+	files, err := AssetDir(container)
 	if err != nil {
 		fmt.Println(err)
 		return err
 	}
-	for _, f := range fs {
-		if f.IsDir() {
-			continue
-		}
-		name := f.Name()
+	for _, f := range files {
 		// Can't use filepath.Ext because that splits at the last dot, and we
 		// want the first dot.
-		if !strings.HasSuffix(name, ".go.html") {
+		if !strings.HasSuffix(f, ".go.html") {
 			continue
 		}
 		templates[name], err = template.ParseFiles(filepath.Join(container, name), filepath.Join(container, "footer.go.html"), filepath.Join(container, "header.go.html"))
