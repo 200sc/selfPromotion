@@ -1,16 +1,15 @@
 package main
 
 import (
-	"net/http"
-	"os"
 	"fmt"
 	"html/template"
+	"net/http"
 	"net/url"
+	"os"
 	"path/filepath"
 	"strings"
 
 	"google.golang.org/appengine"
-	"github.com/nlopes/slack"
 )
 
 type Page struct {
@@ -67,9 +66,16 @@ func main() {
 	http.HandleFunc("/index", WriteTemplate(struct{ Pages []Page }{pages}, "home"))
 	http.HandleFunc("/", LocalRedirect("index"))
 
-	client := slack.New(os.Getenv("SLACK_API_TOKEN"))
+	//client := slack.New(os.Getenv("SLACK_API_TOKEN"))
 
-	http.HandleFunc("/raffler", Raffler(client))
+	http.HandleFunc("/raffler", raffleChallenge())
+	http.HandleFunc("/raffler/start", raffleStart())
+	http.HandleFunc("/raffler/optin", raffleOptin())
+	http.HandleFunc("/raffler/optout", raffleOptout())
+	http.HandleFunc("/raffler/optinall", raffleOptinAll())
+	http.HandleFunc("/raffler/optoutall", raffleOptoutAll())
+	http.HandleFunc("/raffler/whosin", raffleWhosIn())
+	http.HandleFunc("/raffler/draw", raffleDraw())
 	if os.Getenv("IN_APP_ENGINE") != "" {
 		fmt.Println("Running in app engine")
 		appengine.Main()
