@@ -5,10 +5,8 @@ import (
 	"os"
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"net/url"
 	"path/filepath"
-	"runtime"
 	"strings"
 
 	"google.golang.org/appengine"
@@ -110,9 +108,7 @@ func WriteTemplate(inject interface{}, tmplName string) func(w http.ResponseWrit
 var templates = make(map[string]*template.Template)
 
 func init() {
-	_, file, _, _ := runtime.Caller(0)
-	container := filepath.Join(filepath.Dir(file), "templates")
-	loadTemplates(container)
+	loadTemplates("templates")
 }
 
 func loadTemplates(container string) error {
@@ -122,10 +118,10 @@ func loadTemplates(container string) error {
 		fmt.Println(err)
 		return err
 	}
-	for _, f := range files {
+	for _, name := range files {
 		// Can't use filepath.Ext because that splits at the last dot, and we
 		// want the first dot.
-		if !strings.HasSuffix(f, ".go.html") {
+		if !strings.HasSuffix(name, ".go.html") {
 			continue
 		}
 		templates[name], err = template.ParseFiles(filepath.Join(container, name), filepath.Join(container, "footer.go.html"), filepath.Join(container, "header.go.html"))
