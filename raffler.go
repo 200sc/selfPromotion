@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"os"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -15,7 +16,7 @@ func Raffler(api *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 		buf := new(bytes.Buffer)
 		buf.ReadFrom(r.Body)
 		body := buf.String()
-		eventsAPIEvent, e := slackevents.ParseEvent(json.RawMessage(body), slackevents.OptionVerifyToken(&slackevents.TokenComparator{VerificationToken: "TOKEN"}))
+		eventsAPIEvent, e := slackevents.ParseEvent(json.RawMessage(body), slackevents.OptionVerifyToken(&slackevents.TokenComparator{VerificationToken: os.Getenv("SLACK_API_TOKEN")}))
 		if e != nil {
 			fmt.Println(e, body)
 			w.WriteHeader(http.StatusInternalServerError)
