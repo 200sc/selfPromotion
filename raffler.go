@@ -3,8 +3,8 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"net/http"
 	"fmt"
+	"net/http"
 
 	"github.com/nlopes/slack"
 	"github.com/nlopes/slack/slackevents"
@@ -17,6 +17,7 @@ func Raffler(api *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 		body := buf.String()
 		eventsAPIEvent, e := slackevents.ParseEvent(json.RawMessage(body), slackevents.OptionVerifyToken(&slackevents.TokenComparator{VerificationToken: "TOKEN"}))
 		if e != nil {
+			fmt.Println(e, body)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 
