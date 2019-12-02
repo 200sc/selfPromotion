@@ -74,7 +74,12 @@ func reply(w http.ResponseWriter, message string) {
 	w.Write(b)
 }
 
-func raffleStart(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
+func replyToChannel(cl *slack.Client, channelID, message string) {
+	s1, s2, err := cl.PostMessage(channelID, slack.MsgOptionText(message, false))
+	fmt.Println("reply response", s1, s2, err)
+}
+
+func raffleStart(cl *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		r, err := teeVerifier(r)
 		if err != nil {
@@ -105,7 +110,7 @@ func raffleStart(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 			starterID:   slash.UserName,
 			in:          allInUsers,
 		}
-		reply(w, "Raffle started! -- "+slash.Text)
+		replyToChannel(cl, slash.ChannelID, "Raffle started! -- "+slash.Text)
 	}
 }
 
@@ -238,7 +243,7 @@ func raffleOptoutAll(_ *slack.Client) func(w http.ResponseWriter, r *http.Reques
 	}
 }
 
-func raffleWhosIn(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
+func raffleWhosIn(cl *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		r, err := teeVerifier(r)
 		if err != nil {
@@ -268,11 +273,11 @@ func raffleWhosIn(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) 
 		for k := range raff.in {
 			in = append(in, userNames[k])
 		}
-		reply(w, "Who's In: "+strings.Join(in, ","))
+		replyToChannel(cl, slash.ChannelID, "Who's In: "+strings.Join(in, ","))
 	}
 }
 
-func raffleDraw(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
+func raffleDraw(cl *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		r, err := teeVerifier(r)
 		if err != nil {
@@ -305,15 +310,17 @@ func raffleDraw(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 		winner := rand.Intn(len(raff.in))
 		for k := range raff.in {
 			if winner == 0 {
-				reply(w, "Name drawn: "+userNames[k])
+				replyToChannel(cl, slash.ChannelID, "Name drawn: "+userNames[k])
+				w.WriteHeader(200)
 				return
 			}
 			winner--
 		}
+		fmt.Println("Failed to find winner in list")
 	}
 }
 
-func raffleStop(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
+func raffleStop(cl *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		r, err := teeVerifier(r)
 		if err != nil {
@@ -344,7 +351,8 @@ func raffleStop(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 		//	reply(w, "The user who star")
 		//}
 		delete(ongoingRaffles, slash.ChannelID)
-		reply(w, "Deleted raffle for channel "+channelNames[slash.ChannelID])
+		replyToChannel(cl, slash.ChannelID, "Ended raffle for channel "+channelNames[slash.ChannelID])
+		w.WriteHeader(200)
 	}
 }
 
