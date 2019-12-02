@@ -309,6 +309,7 @@ func raffleDraw(cl *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 		}
 		if len(raff.in) == 0 {
 			reply(w, "No one has opted-in to the current raffle.")
+			return
 		}
 		rand.Seed(time.Now().UnixNano())
 		winner := rand.Intn(len(raff.in))
