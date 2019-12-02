@@ -105,10 +105,14 @@ func raffleStart(cl *slack.Client) func(w http.ResponseWriter, r *http.Request) 
 			reply(w, "Please stop the current raffle before starting a new one.")
 			return
 		}
+		in := make(map[string]struct{}, len(allInUsers))
+		for k, v := range allInUsers {
+			in[k] = v
+		}
 		ongoingRaffles[slash.ChannelID] = &Raffle{
 			description: slash.Text,
 			starterID:   slash.UserName,
-			in:          allInUsers,
+			in:          in,
 		}
 		replyToChannel(cl, slash.ChannelID, "Raffle started! -- "+slash.Text)
 	}
