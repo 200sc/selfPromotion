@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/nlopes/slack"
 	"google.golang.org/appengine"
 )
 
@@ -66,16 +67,17 @@ func main() {
 	http.HandleFunc("/index", WriteTemplate(struct{ Pages []Page }{pages}, "home"))
 	http.HandleFunc("/", LocalRedirect("index"))
 
-	//client := slack.New(os.Getenv("SLACK_API_TOKEN"))
+	client := slack.New(os.Getenv("SLACK_API_TOKEN"))
 
 	http.HandleFunc("/raffler", raffleChallenge())
-	http.HandleFunc("/raffler/start", raffleStart())
-	http.HandleFunc("/raffler/optin", raffleOptin())
-	http.HandleFunc("/raffler/optout", raffleOptout())
-	http.HandleFunc("/raffler/optinall", raffleOptinAll())
-	http.HandleFunc("/raffler/optoutall", raffleOptoutAll())
-	http.HandleFunc("/raffler/whosin", raffleWhosIn())
-	http.HandleFunc("/raffler/draw", raffleDraw())
+	http.HandleFunc("/raffler/start", raffleStart(client))
+	http.HandleFunc("/raffler/optin", raffleOptin(client))
+	http.HandleFunc("/raffler/optout", raffleOptout(client))
+	http.HandleFunc("/raffler/optinall", raffleOptinAll(client))
+	http.HandleFunc("/raffler/optoutall", raffleOptoutAll(client))
+	http.HandleFunc("/raffler/whosin", raffleWhosIn(client))
+	http.HandleFunc("/raffler/draw", raffleDraw(client))
+	http.HandleFunc("/raffler/stop", raffleStop(client))
 	if os.Getenv("IN_APP_ENGINE") != "" {
 		fmt.Println("Running in app engine")
 		appengine.Main()

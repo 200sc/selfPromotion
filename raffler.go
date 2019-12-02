@@ -4,24 +4,28 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"os"
+	"strings"
+	"sync"
+	"time"
 
+	"github.com/nlopes/slack"
 	"github.com/nlopes/slack/slackevents"
 )
 
 func raffleChallenge() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(r.Body)
-		body := buf.String()
-		eventsAPIEvent, e := slackevents.ParseEvent(json.RawMessage(body), slackevents.OptionVerifyToken(&slackevents.TokenComparator{VerificationToken: os.Getenv("SLACK_API_TOKEN")}))
-		if e != nil {
-			fmt.Println(e, body)
+		event, body, err := apiEvent(r)
+		if err != nil {
+			fmt.Println("Error parsing event", err)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 
-		if eventsAPIEvent.Type == slackevents.URLVerification {
+		if event.Type == slackevents.URLVerification {
 			var r *slackevents.ChallengeResponse
 			err := json.Unmarshal([]byte(body), &r)
 			if err != nil {
@@ -31,111 +35,304 @@ func raffleChallenge() func(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(r.Challenge))
 		}
 		fmt.Println("URL:", r.RequestURI)
-		fmt.Println("Type:", eventsAPIEvent.Type)
+		fmt.Println("Type:", event.Type)
 	}
 }
 
-func raffleStart() func(w http.ResponseWriter, r *http.Request) {
+var (
+	raffleLock sync.Mutex
+	// map from channel to raffle
+	ongoingRaffles = map[string]*Raffle{}
+	allInUsers     = map[string]struct{}{}
+	userNames      = map[string]string{}
+)
+
+type Raffle struct {
+	description string
+	starterID   string
+	in          map[string]struct{}
+}
+
+func teeVerifier(r *http.Request) (*http.Request, error) {
+	verifier, err := slack.NewSecretsVerifier(r.Header, os.Getenv("SLACK_API_TOKEN"))
+	if err != nil {
+		return nil, err
+	}
+	r.Body = ioutil.NopCloser(io.TeeReader(r.Body, &verifier))
+	return r, nil
+}
+
+func reply(w http.ResponseWriter, message string) {
+	params := &slack.Msg{Text: message}
+	b, err := json.Marshal(params)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(b)
+}
+
+func raffleStart(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(r.Body)
-		body := buf.String()
-		eventsAPIEvent, e := slackevents.ParseEvent(json.RawMessage(body), slackevents.OptionVerifyToken(&slackevents.TokenComparator{VerificationToken: os.Getenv("SLACK_API_TOKEN")}))
-		if e != nil {
-			fmt.Println(e, body)
+		r, err := teeVerifier(r)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+		}
+		slash, err := slack.SlashCommandParse(r)
+		if err != nil {
+			fmt.Println("Error parsing event", err)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 		fmt.Println("URL:", r.RequestURI)
-		fmt.Println("Type:", eventsAPIEvent.Type)
+		fmt.Println("Token:", slash.Token)
+		fmt.Println("Channel:", slash.ChannelName)
+		fmt.Println("Command:", slash.Command)
+		fmt.Println("User:", slash.UserName)
+		fmt.Println("Text:", slash.Text)
+		// Todo: if wrong command, complain
+		raffleLock.Lock()
+		defer raffleLock.Unlock()
+		userNames[slash.UserID] = slash.UserName
+		if _, ok := ongoingRaffles[slash.ChannelName]; ok {
+			reply(w, "Please stop the current raffle before starting a new one.")
+			return
+		}
+		ongoingRaffles[slash.ChannelName] = &Raffle{
+			description: slash.Text,
+			starterID:   slash.UserName,
+			in:          allInUsers,
+		}
+		reply(w, "Raffle started! -- "+slash.Text)
 	}
 }
 
-func raffleOptin() func(w http.ResponseWriter, r *http.Request) {
+func raffleOptin(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(r.Body)
-		body := buf.String()
-		eventsAPIEvent, e := slackevents.ParseEvent(json.RawMessage(body), slackevents.OptionVerifyToken(&slackevents.TokenComparator{VerificationToken: os.Getenv("SLACK_API_TOKEN")}))
-		if e != nil {
-			fmt.Println(e, body)
+		r, err := teeVerifier(r)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+		}
+		slash, err := slack.SlashCommandParse(r)
+		if err != nil {
+			fmt.Println("Error parsing event", err)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 		fmt.Println("URL:", r.RequestURI)
-		fmt.Println("Type:", eventsAPIEvent.Type)
+		fmt.Println("Token:", slash.Token)
+		fmt.Println("Channel:", slash.ChannelName)
+		fmt.Println("Command:", slash.Command)
+		fmt.Println("User:", slash.UserName)
+		fmt.Println("Text:", slash.Text)
+		raffleLock.Lock()
+		defer raffleLock.Unlock()
+		userNames[slash.UserID] = slash.UserName
+		raff, ok := ongoingRaffles[slash.ChannelName]
+		if !ok {
+			reply(w, "Cannot opt-in. No raffle is ongoing in this channel.")
+			return
+		}
+		if _, ok := raff.in[slash.UserID]; ok {
+			reply(w, slash.UserName+" is already in the raffle.")
+		}
+		raff.in[slash.UserID] = struct{}{}
+		reply(w, slash.UserName+" added to raffle.")
 	}
 }
 
-func raffleOptout() func(w http.ResponseWriter, r *http.Request) {
+func raffleOptout(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(r.Body)
-		body := buf.String()
-		eventsAPIEvent, e := slackevents.ParseEvent(json.RawMessage(body), slackevents.OptionVerifyToken(&slackevents.TokenComparator{VerificationToken: os.Getenv("SLACK_API_TOKEN")}))
-		if e != nil {
-			fmt.Println(e, body)
+		r, err := teeVerifier(r)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+		}
+		slash, err := slack.SlashCommandParse(r)
+		if err != nil {
+			fmt.Println("Error parsing event", err)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 		fmt.Println("URL:", r.RequestURI)
-		fmt.Println("Type:", eventsAPIEvent.Type)
+		fmt.Println("Token:", slash.Token)
+		fmt.Println("Channel:", slash.ChannelName)
+		fmt.Println("Command:", slash.Command)
+		fmt.Println("User:", slash.UserName)
+		fmt.Println("Text:", slash.Text)
+		raffleLock.Lock()
+		defer raffleLock.Unlock()
+		userNames[slash.UserID] = slash.UserName
+		raff, ok := ongoingRaffles[slash.ChannelName]
+		if !ok {
+			reply(w, "Cannot opt-out. No raffle is ongoing in this channel.")
+			return
+		}
+		if _, ok := raff.in[slash.UserID]; !ok {
+			reply(w, slash.UserName+" is not in the raffle.")
+		}
+		delete(raff.in, slash.UserID)
+		reply(w, slash.UserName+" removed from raffle.")
 	}
 }
 
-func raffleOptinAll() func(w http.ResponseWriter, r *http.Request) {
+func raffleOptinAll(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(r.Body)
-		body := buf.String()
-		eventsAPIEvent, e := slackevents.ParseEvent(json.RawMessage(body), slackevents.OptionVerifyToken(&slackevents.TokenComparator{VerificationToken: os.Getenv("SLACK_API_TOKEN")}))
-		if e != nil {
-			fmt.Println(e, body)
+		r, err := teeVerifier(r)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+		}
+		slash, err := slack.SlashCommandParse(r)
+		if err != nil {
+			fmt.Println("Error parsing event", err)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 		fmt.Println("URL:", r.RequestURI)
-		fmt.Println("Type:", eventsAPIEvent.Type)
+		fmt.Println("Token:", slash.Token)
+		fmt.Println("Channel:", slash.ChannelName)
+		fmt.Println("Command:", slash.Command)
+		fmt.Println("User:", slash.UserName)
+		fmt.Println("Text:", slash.Text)
+		raffleLock.Lock()
+		defer raffleLock.Unlock()
+		userNames[slash.UserID] = slash.UserName
+		if _, ok := allInUsers[slash.UserID]; ok {
+			reply(w, slash.UserName+" is already opted in to all raffles.")
+		}
+		allInUsers[slash.UserID] = struct{}{}
+		for _, raff := range ongoingRaffles {
+			raff.in[slash.UserID] = struct{}{}
+		}
+		reply(w, slash.UserName+" added to all ongoing and future raffles")
 	}
 }
 
-func raffleOptoutAll() func(w http.ResponseWriter, r *http.Request) {
+func raffleOptoutAll(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(r.Body)
-		body := buf.String()
-		eventsAPIEvent, e := slackevents.ParseEvent(json.RawMessage(body), slackevents.OptionVerifyToken(&slackevents.TokenComparator{VerificationToken: os.Getenv("SLACK_API_TOKEN")}))
-		if e != nil {
-			fmt.Println(e, body)
+		r, err := teeVerifier(r)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+		}
+		slash, err := slack.SlashCommandParse(r)
+		if err != nil {
+			fmt.Println("Error parsing event", err)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 		fmt.Println("URL:", r.RequestURI)
-		fmt.Println("Type:", eventsAPIEvent.Type)
+		fmt.Println("Token:", slash.Token)
+		fmt.Println("Channel:", slash.ChannelName)
+		fmt.Println("Command:", slash.Command)
+		fmt.Println("User:", slash.UserName)
+		fmt.Println("Text:", slash.Text)
+		raffleLock.Lock()
+		defer raffleLock.Unlock()
+		userNames[slash.UserID] = slash.UserName
+		delete(allInUsers, slash.UserID)
+		for _, raff := range ongoingRaffles {
+			delete(raff.in, slash.UserID)
+		}
+		reply(w, slash.UserName+" removed from all ongoing and future raffles")
 	}
 }
 
-func raffleWhosIn() func(w http.ResponseWriter, r *http.Request) {
+func raffleWhosIn(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(r.Body)
-		body := buf.String()
-		eventsAPIEvent, e := slackevents.ParseEvent(json.RawMessage(body), slackevents.OptionVerifyToken(&slackevents.TokenComparator{VerificationToken: os.Getenv("SLACK_API_TOKEN")}))
-		if e != nil {
-			fmt.Println(e, body)
+		r, err := teeVerifier(r)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+		}
+		slash, err := slack.SlashCommandParse(r)
+		if err != nil {
+			fmt.Println("Error parsing event", err)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 		fmt.Println("URL:", r.RequestURI)
-		fmt.Println("Type:", eventsAPIEvent.Type)
+		fmt.Println("Token:", slash.Token)
+		fmt.Println("Channel:", slash.ChannelName)
+		fmt.Println("Command:", slash.Command)
+		fmt.Println("User:", slash.UserName)
+		fmt.Println("Text:", slash.Text)
+		raffleLock.Lock()
+		defer raffleLock.Unlock()
+		userNames[slash.UserID] = slash.UserName
+		raff, ok := ongoingRaffles[slash.ChannelName]
+		if !ok {
+			reply(w, "There is no ongoing raffle in this channel.")
+			return
+		}
+		in := make([]string, 0, len(raff.in))
+		for k := range raff.in {
+			in = append(in, k)
+		}
+		reply(w, "Who's In: "+strings.Join(in, ","))
 	}
 }
 
-func raffleDraw() func(w http.ResponseWriter, r *http.Request) {
+func raffleDraw(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(r.Body)
-		body := buf.String()
-		eventsAPIEvent, e := slackevents.ParseEvent(json.RawMessage(body), slackevents.OptionVerifyToken(&slackevents.TokenComparator{VerificationToken: os.Getenv("SLACK_API_TOKEN")}))
-		if e != nil {
-			fmt.Println(e, body)
+		r, err := teeVerifier(r)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+		}
+		slash, err := slack.SlashCommandParse(r)
+		if err != nil {
+			fmt.Println("Error parsing event", err)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 		fmt.Println("URL:", r.RequestURI)
-		fmt.Println("Type:", eventsAPIEvent.Type)
+		fmt.Println("Token:", slash.Token)
+		fmt.Println("Channel:", slash.ChannelName)
+		fmt.Println("Command:", slash.Command)
+		fmt.Println("User:", slash.UserName)
+		fmt.Println("Text:", slash.Text)
+		raffleLock.Lock()
+		defer raffleLock.Unlock()
+		raff, ok := ongoingRaffles[slash.ChannelName]
+		if !ok {
+			reply(w, "There is no ongoing raffle in this channel.")
+			return
+		}
+		rand.Seed(time.Now().UnixNano())
+		winner := rand.Intn(len(raff.in))
+		for k := range raff.in {
+			if winner == 0 {
+				reply(w, "Name drawn: "+userNames[k])
+				return
+			}
+			winner--
+		}
 	}
+}
+
+func raffleStop(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		r, err := teeVerifier(r)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+		}
+		slash, err := slack.SlashCommandParse(r)
+		if err != nil {
+			fmt.Println("Error parsing event", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+		fmt.Println("URL:", r.RequestURI)
+		fmt.Println("Token:", slash.Token)
+		fmt.Println("Channel:", slash.ChannelName)
+		fmt.Println("Command:", slash.Command)
+		fmt.Println("User:", slash.UserName)
+		fmt.Println("Text:", slash.Text)
+		raffleLock.Lock()
+		defer raffleLock.Unlock()
+		if _, ok := ongoingRaffles[slash.ChannelName]; !ok {
+			reply(w, "There is no ongoing raffle in this channel.")
+			return
+		}
+		delete(ongoingRaffles, slash.ChannelName)
+		reply(w, "Deleted raffle for channel "+slash.ChannelName)
+	}
+}
+
+func apiEvent(r *http.Request) (slackevents.EventsAPIEvent, string, error) {
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(r.Body)
+	body := buf.String()
+	ev, err := slackevents.ParseEvent(json.RawMessage(body), slackevents.OptionVerifyToken(&slackevents.TokenComparator{VerificationToken: os.Getenv("SLACK_API_TOKEN")}))
+	return ev, body, err
 }
