@@ -45,6 +45,7 @@ var (
 	ongoingRaffles = map[string]*Raffle{}
 	allInUsers     = map[string]struct{}{}
 	userNames      = map[string]string{}
+	channelNames   = map[string]string{}
 )
 
 type Raffle struct {
@@ -94,11 +95,12 @@ func raffleStart(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 		raffleLock.Lock()
 		defer raffleLock.Unlock()
 		userNames[slash.UserID] = slash.UserName
-		if _, ok := ongoingRaffles[slash.ChannelName]; ok {
+		channelNames[slash.ChannelID] = slash.ChannelName
+		if _, ok := ongoingRaffles[slash.ChannelID]; ok {
 			reply(w, "Please stop the current raffle before starting a new one.")
 			return
 		}
-		ongoingRaffles[slash.ChannelName] = &Raffle{
+		ongoingRaffles[slash.ChannelID] = &Raffle{
 			description: slash.Text,
 			starterID:   slash.UserName,
 			in:          allInUsers,
@@ -127,7 +129,8 @@ func raffleOptin(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 		raffleLock.Lock()
 		defer raffleLock.Unlock()
 		userNames[slash.UserID] = slash.UserName
-		raff, ok := ongoingRaffles[slash.ChannelName]
+		channelNames[slash.ChannelID] = slash.ChannelName
+		raff, ok := ongoingRaffles[slash.ChannelID]
 		if !ok {
 			reply(w, "Cannot opt-in. No raffle is ongoing in this channel.")
 			return
@@ -160,7 +163,8 @@ func raffleOptout(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) 
 		raffleLock.Lock()
 		defer raffleLock.Unlock()
 		userNames[slash.UserID] = slash.UserName
-		raff, ok := ongoingRaffles[slash.ChannelName]
+		channelNames[slash.ChannelID] = slash.ChannelName
+		raff, ok := ongoingRaffles[slash.ChannelID]
 		if !ok {
 			reply(w, "Cannot opt-out. No raffle is ongoing in this channel.")
 			return
@@ -193,6 +197,7 @@ func raffleOptinAll(_ *slack.Client) func(w http.ResponseWriter, r *http.Request
 		raffleLock.Lock()
 		defer raffleLock.Unlock()
 		userNames[slash.UserID] = slash.UserName
+		channelNames[slash.ChannelID] = slash.ChannelName
 		if _, ok := allInUsers[slash.UserID]; ok {
 			reply(w, slash.UserName+" is already opted in to all raffles.")
 		}
@@ -224,6 +229,7 @@ func raffleOptoutAll(_ *slack.Client) func(w http.ResponseWriter, r *http.Reques
 		raffleLock.Lock()
 		defer raffleLock.Unlock()
 		userNames[slash.UserID] = slash.UserName
+		channelNames[slash.ChannelID] = slash.ChannelName
 		delete(allInUsers, slash.UserID)
 		for _, raff := range ongoingRaffles {
 			delete(raff.in, slash.UserID)
@@ -252,14 +258,15 @@ func raffleWhosIn(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) 
 		raffleLock.Lock()
 		defer raffleLock.Unlock()
 		userNames[slash.UserID] = slash.UserName
-		raff, ok := ongoingRaffles[slash.ChannelName]
+		channelNames[slash.ChannelID] = slash.ChannelName
+		raff, ok := ongoingRaffles[slash.ChannelID]
 		if !ok {
 			reply(w, "There is no ongoing raffle in this channel.")
 			return
 		}
 		in := make([]string, 0, len(raff.in))
 		for k := range raff.in {
-			in = append(in, k)
+			in = append(in, userNames[k])
 		}
 		reply(w, "Who's In: "+strings.Join(in, ","))
 	}
@@ -284,7 +291,9 @@ func raffleDraw(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Text:", slash.Text)
 		raffleLock.Lock()
 		defer raffleLock.Unlock()
-		raff, ok := ongoingRaffles[slash.ChannelName]
+		userNames[slash.UserID] = slash.UserName
+		channelNames[slash.ChannelID] = slash.ChannelName
+		raff, ok := ongoingRaffles[slash.ChannelID]
 		if !ok {
 			reply(w, "There is no ongoing raffle in this channel.")
 			return
@@ -320,12 +329,19 @@ func raffleStop(_ *slack.Client) func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Text:", slash.Text)
 		raffleLock.Lock()
 		defer raffleLock.Unlock()
-		if _, ok := ongoingRaffles[slash.ChannelName]; !ok {
+		channelNames[slash.ChannelID] = slash.ChannelName
+		userNames[slash.UserID] = slash.UserName
+		_, ok := ongoingRaffles[slash.ChannelID]
+		if !ok {
 			reply(w, "There is no ongoing raffle in this channel.")
 			return
 		}
-		delete(ongoingRaffles, slash.ChannelName)
-		reply(w, "Deleted raffle for channel "+slash.ChannelName)
+		// Todo: admins, limited stopping
+		//if raff.starterID != slash.UserID {
+		//	reply(w, "The user who star")
+		//}
+		delete(ongoingRaffles, slash.ChannelID)
+		reply(w, "Deleted raffle for channel "+channelNames[slash.ChannelID])
 	}
 }
 
