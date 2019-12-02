@@ -67,7 +67,7 @@ func main() {
 	http.HandleFunc("/index", WriteTemplate(struct{ Pages []Page }{pages}, "home"))
 	http.HandleFunc("/", LocalRedirect("index"))
 
-	client := slack.New(os.Getenv("SLACK_API_TOKEN"))
+	client := slack.New(os.Getenv("SLACK_OAUTH_TOKEN"))
 
 	http.HandleFunc("/raffler", raffleChallenge())
 	http.HandleFunc("/raffler/start", raffleStart(client))
