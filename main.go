@@ -78,6 +78,7 @@ func main() {
 	http.HandleFunc("/raffler/whosin", slashCommand(raffleWhosIn(client)))
 	http.HandleFunc("/raffler/draw", slashCommand(raffleDraw(client)))
 	http.HandleFunc("/raffler/stop", slashCommand(raffleStop(client)))
+	http.HandleFunc("/raffler/set", slashCommand(raffleSetUsers(client)))
 	if os.Getenv("IN_APP_ENGINE") != "" {
 		fmt.Println("Running in app engine")
 		appengine.Main()
