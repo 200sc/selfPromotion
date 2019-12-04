@@ -231,16 +231,17 @@ func raffleSetUsers(cl *slack.Client) func(slash slack.SlashCommand, w http.Resp
 		// secret flag, set opt in all or opt out all
 		if len(split) != 1 {
 			if split[1] == "optinall" {
-				fmt.Println("Opting in all secretly")
+				reply(w, "Opting in all secretly")
 				for _, id := range toAddIDs {
 					allInUsers[id] = struct{}{}
 				}
 			} else if split[1] == "optoutall" {
-				fmt.Println("Opting out all secretly")
+				reply(w, "Opting out all secretly")
 				for _, id := range toAddIDs {
 					delete(allInUsers, id)
 				}
 			}
+			return
 		}
 		raff, ok := ongoingRaffles[slash.ChannelID]
 		if !ok {
@@ -282,7 +283,7 @@ func raffleDraw(cl *slack.Client) func(slash slack.SlashCommand, w http.Response
 			}
 		}
 
-		if winnerCount < len(raff.in) {
+		if winnerCount > len(raff.in) {
 			reply(w, fmt.Sprintf("Only %d potential winners have opted in, but %d were drawn.", len(raff.in), winnerCount))
 			return
 		}
