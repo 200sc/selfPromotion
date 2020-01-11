@@ -49,7 +49,8 @@ func gameConnect(w http.ResponseWriter, req *http.Request) {
 	} else {
 		// make new game
 		g := Game{
-			players: map[string]struct{}{name: struct{}{}},
+			players:   map[string]struct{}{name: struct{}{}},
+			listening: map[string]chan []byte{},
 		}
 		games[gID] = g
 	}
