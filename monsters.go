@@ -11,7 +11,7 @@ import (
 
 var (
 	gameLock sync.Mutex
-	games    map[string]Game
+	games    = make(map[string]Game)
 )
 
 type Game struct {
