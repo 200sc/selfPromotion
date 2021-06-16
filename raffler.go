@@ -16,6 +16,8 @@ import (
 
 	"github.com/nlopes/slack"
 	"github.com/nlopes/slack/slackevents"
+
+	"github.com/gofrs/uuid"
 )
 
 func raffleChallenge() func(w http.ResponseWriter, r *http.Request) {
@@ -197,6 +199,8 @@ func raffleWhosIn(cl *slack.Client) func(slash slack.SlashCommand, w http.Respon
 	}
 }
 
+const validateUsersAreReal = false
+
 func raffleSetUsers(cl *slack.Client) func(slash slack.SlashCommand, w http.ResponseWriter, r *http.Request) {
 	return func(slash slack.SlashCommand, w http.ResponseWriter, r *http.Request) {
 
@@ -222,8 +226,18 @@ func raffleSetUsers(cl *slack.Client) func(slash slack.SlashCommand, w http.Resp
 				}
 			}
 			if toAddIDs[i] == "" {
-				reply(w, "Couldn't find user: "+userName)
-				return
+				if validateUsersAreReal {
+					reply(w, "Couldn't find user: "+userName)
+					return
+				}
+				// Support 'fake' users, like 'engineering'
+				id, err := uuid.NewV4()
+				if err != nil {
+					reply(w, "Couldn't create uuid: "+err.Error())
+					return
+				}
+				userNames[id.String()] = userName
+				toAddIDs[i] = id.String()
 			}
 		}
 		fmt.Println("Got IDs for user names:", toAddIDs, toAdd)
