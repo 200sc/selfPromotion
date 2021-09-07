@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/nlopes/slack"
+	"github.com/slack-go/slack"
 	"google.golang.org/appengine"
 )
 

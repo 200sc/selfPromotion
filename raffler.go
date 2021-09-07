@@ -14,8 +14,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/nlopes/slack"
-	"github.com/nlopes/slack/slackevents"
+	"github.com/slack-go/slack"
+	"github.com/slack-go/slack/slackevents"
 
 	"github.com/gofrs/uuid"
 )
@@ -208,8 +208,7 @@ func raffleSetUsers(cl *slack.Client) func(slash slack.SlashCommand, w http.Resp
 			reply(w, "Usage: /raffleset april,bill,clara,danthro")
 			return
 		}
-		split := strings.Split(slash.Text, " ")
-		toAdd := strings.Split(split[0], ",")
+		toAdd := strings.Split(slash.Text, ",")
 		toAddIDs := make([]string, len(toAdd))
 		allUsers, err := cl.GetUsers()
 		if err != nil {
@@ -243,20 +242,20 @@ func raffleSetUsers(cl *slack.Client) func(slash slack.SlashCommand, w http.Resp
 		fmt.Println("Got IDs for user names:", toAddIDs, toAdd)
 
 		// secret flag, set opt in all or opt out all
-		if len(split) != 1 {
-			if split[1] == "optinall" {
-				reply(w, "Opting in all secretly")
-				for _, id := range toAddIDs {
-					allInUsers[id] = struct{}{}
-				}
-			} else if split[1] == "optoutall" {
-				reply(w, "Opting out all secretly")
-				for _, id := range toAddIDs {
-					delete(allInUsers, id)
-				}
-			}
-			return
-		}
+		// if len(split) != 1 {
+		// 	if split[1] == "optinall" {
+		// 		reply(w, "Opting in all secretly")
+		// 		for _, id := range toAddIDs {
+		// 			allInUsers[id] = struct{}{}
+		// 		}
+		// 	} else if split[1] == "optoutall" {
+		// 		reply(w, "Opting out all secretly")
+		// 		for _, id := range toAddIDs {
+		// 			delete(allInUsers, id)
+		// 		}
+		// 	}
+		// 	return
+		// }
 		raff, ok := ongoingRaffles[slash.ChannelID]
 		if !ok {
 			reply(w, "There is no ongoing raffle in this channel.")
