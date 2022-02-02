@@ -1,8 +1,10 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"html/template"
+	"io/fs"
 	"net/http"
 	"net/url"
 	"os"
@@ -19,7 +21,16 @@ type Page struct {
 	SubPages []Page
 }
 
+// go:embed quickstart
+var quickstartFS embed.FS
+var quickstartHTTP http.FileSystem
+
 func main() {
+	quickFS, err := fs.Sub(quickstartFS, "quickstart")
+	if err != nil {
+		panic(err)
+	}
+	quickstartHTTP = http.FS(quickFS)
 	// Site design:
 	// Home
 	// - Blog
@@ -58,7 +69,9 @@ func main() {
 			},
 		},
 	}
-	http.HandleFunc("/blog", WriteTemplate(nil, "construction"))
+
+	httpfs := http.FileServer(quickstartHTTP)
+	http.HandleFunc("/blog", httpfs.ServeHTTP)
 	http.HandleFunc("/games", WriteTemplate(nil, "construction"))
 	http.HandleFunc("/contact", WriteTemplate(nil, "construction"))
 	http.HandleFunc("/resume", WriteTemplate(nil, "construction"))
