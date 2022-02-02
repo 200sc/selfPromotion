@@ -11,7 +11,7 @@ draft: false
 This blog post is meant to be the beginning of a series of posts covering the [Oak game engine](https://www.github.com/oakmound/oak):
 
 - What is Oak?
-- Where Oak was as of the end of 2021?
+- Where was Oak at of the end of 2021?
 - What happened to Oak during January 2022?
 - What is happening with Oak going into Feburary 2022?
 
