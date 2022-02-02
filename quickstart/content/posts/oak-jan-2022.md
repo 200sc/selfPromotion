@@ -165,7 +165,7 @@ I do genuinely appreciate time spent reading this, if you are using or thinking 
 
 My name is Patrick Stephen in [The Physical World](https://en.wikipedia.org/wiki/Earth) and [200sc](https://github.com/200sc/) in [The Digital World](https://digimon.fandom.com/wiki/Digital_World).
 
-I've been working on Oak since 2016, however much work at any time depending on whether I was receiving payment to work on something else instead for 40 hours. As of Feb 1 2022 the name of that entity is [strongDM](https://www.strongdm.com/).
+I've been working on Oak since 2016, however much work at any time depending on whether I was receiving payment to work on something else instead for 40 hours. As of Feb 1 2022 the entity doing that is [strongDM](https://www.strongdm.com/).
 
 Earlier I've worked on smaller projects, discoverable via github, that are more scientific-- evolutionary computation, computational geometry, and extensible language theory as notable call-outs. These fall as a third priority on my list, however, behind work that keeps my family eating and work on Oak (Oak being work that roughly got me enough miniscule notoriety to provide the previous eating-providing work).
 
