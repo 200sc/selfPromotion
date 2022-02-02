@@ -1,7 +1,7 @@
 ---
 title: "State of Oak: January 2022"
 date: 2022-02-01T18:26:02-06:00
-draft: true
+draft: false
 ---
 
 ## What is this Writing; Why am I writing it
