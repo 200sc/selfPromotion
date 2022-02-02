@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="utf-8" />
-<title>200sc.dev</title>
+<title>Categories</title>
 
 
   
@@ -19,7 +19,7 @@
   title="200sc.dev"
 />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="200sc.dev"/>
+<meta name="twitter:title" content="Categories"/>
 <meta name="twitter:description" content=""/>
 
 
@@ -70,9 +70,7 @@
   <body>
     
   
-    
-  
-  
+
 
 
 
@@ -89,10 +87,10 @@
 
     <div class="intro-header">
       <div class="container">
-        <div class="page-heading">
+        <div class="categories-heading">
           
             <h1>
-              200sc.dev
+              Categories
             </h1>
           
           
@@ -104,39 +102,9 @@
 
     
   <div class="container" role="main">
-    <div class="posts-list">
+    <article class="post-preview">
       
-        
-        
-
-      
-        <article class="post-preview">
-  <a href="http://200sc.dev/posts/oak-jan-2021/">
-    <h2 class="post-title">State of Oak: January 2022</h2>
-  </a>
-  <div class="post-entry">
-    
-      <p>What is this Writing; Why am I writing it What This blog post is meant to be the beginning of a series of posts covering the Oak game engine:
- What is Oak? Where was Oak at of the end of 2021? What happened to Oak during January 2022? What is happening with Oak going into February 2022?  Followup blog posts will probably not include those first two points, but will include the latter two, with the month incrementing.</p>
-      <a href="http://200sc.dev/posts/oak-jan-2021/" class="post-read-more"
-        >Read More</a
-      >
-    
-  </div>
-
-  <div class="postmeta">
-    <span class="meta-post">
-  <em class="fa fa-calendar-alt"></em
-  >&nbsp;Feb 1, 2022
-  
-</span>
-
-  </div>
-</article>
-
-      
-    </div>
-    
+    </article>
   </div>
 
     <footer>

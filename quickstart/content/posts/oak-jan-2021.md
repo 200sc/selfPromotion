@@ -13,11 +13,11 @@ This blog post is meant to be the beginning of a series of posts covering the [O
 - What is Oak?
 - Where was Oak at of the end of 2021?
 - What happened to Oak during January 2022?
-- What is happening with Oak going into Feburary 2022?
+- What is happening with Oak going into February 2022?
 
 Followup blog posts will probably not include those first two points, but will include the latter two, with the month incrementing.
 
-Blog post Version: 1.0.0. No edits since publishing.
+Blog post Version: 1.0.1, Typo fixes
 
 ### Why
 
@@ -25,7 +25,7 @@ This blog post serves many purposes:
 
 #### For outsiders to Oak, this writing wants you to look at Oak and try it out
 
-Its a game engine-- its written in Go and its different from other Go game engines because its primary mission is to **just** be written in Go-- right now you can't avoid C dependencies for targets like OSX or Android, but Windows, WASM and Linux are good and stable without it and if we can find a way to get rid of C we will pursue it. Hopefully that's interesting enough to give it a look.
+It's a game engine-- it's written in Go and it's different from other Go game engines because its primary mission is to **just** be written in Go-- right now you can't avoid C dependencies for targets like OSX or Android, but Windows, WASM and Linux are good and stable without it and if we can find a way to get rid of C we will pursue it. Hopefully that's interesting enough to give it a look.
 
 #### For those few familiar with Oak, this writing wants to remind you about Oak and feel good about its progress
 
@@ -91,7 +91,7 @@ With that above game template I put together [a Tetris Clone](https://www.github
 
 #### Windows ARM Support
 
-By [incrementing a library](https://github.com/oakmound/oak/pull/184) we added ARM support for Windows! Compared to how hard it would have been to do it if we needed to compile C and figure out cross compilers / get a GCC targetting ARM on a windows ARM machine, I think that this demonstrates some value in avoiding C dependencies.
+By [incrementing a library](https://github.com/oakmound/oak/pull/184) we added ARM support for Windows! Compared to how hard it would have been to do it if we needed to compile C and figure out cross compilers / get a GCC targeting ARM on a windows ARM machine, I think that this demonstrates some value in avoiding C dependencies.
 
 #### Linux ARM Support
 
@@ -110,9 +110,9 @@ Android support is almost fully complete, with all tried examples functioning. T
 
 #### Audio Overhaul
 
-The audio system underneath oak as it lives currently works pretty OK on windows, for WAV or MP3 files, and has some difficulties on linux that [need to be investigated further](https://github.com/oakmound/oak/issues/131). Audio on OSX is non-existant, audio on JS and Android is non-existant, and the interface for using audio and using code-generated audio is rough.
+The audio system underneath oak as it lives currently works pretty OK on windows, for WAV or MP3 files, and has some difficulties on linux that [need to be investigated further](https://github.com/oakmound/oak/issues/131). Audio on OSX is non-existent, audio on JS and Android is non-existent, and the interface for using audio and using code-generated audio is rough.
 
-We may run into barriers with breaking changes here, but we should try to get as far as we can adding and improving existing support. 
+We may run into barriers with breaking changes here, but we should try to get as far as we can adding and improving existing support.
 
 ### On the Horizon <a name="on-the-horizon"/>
 
@@ -124,7 +124,7 @@ The most used of these packages is `btn`, a fully functional-optionized package 
 
 #### Another Month-Long Game
 
-We've done Tetris, which honestly could have been done in about a week or a day with enough high speed music and questionably healthy sources of body fuel (and / or negligence of other daily tasks). What's next? We could maybe make a Mario 1 or Legend of Zelda 1 engine with a level or two without much comittment. If we're looking to make something that produces reusable components, something grid based like Sokobon or Rogue might lend itself to producing pathing helpers, for example.
+We've done Tetris, which honestly could have been done in about a week or a day with enough high speed music and questionably healthy sources of body fuel (and / or negligence of other daily tasks). What's next? We could maybe make a Mario 1 or Legend of Zelda 1 engine with a level or two without much commitment. If we're looking to make something that produces reusable components, something grid based like Sokobon or Rogue might lend itself to producing pathing helpers, for example.
 
 This is an open question still. Nothing comes to mind immediately as obviously the next example game to make after Tetris.
 
@@ -136,9 +136,9 @@ Also an open question. One way or another, more small (but not miniscule) exampl
 
 #### Generics
 
-Go 1.18 is introducing Generics / Parametric Polymorphism (roughly), and Oak should look to see how it could refactor itself to take advantage of these changes. Without digging too deep, the event system currently requires `interface{}` types and casting to known types within binding functions-- can we remove this entirely? Can `Bind` calls take in a paramaterized type that would move these checks to compile time?
+Go 1.18 is introducing Generics / Parametric Polymorphism (roughly), and Oak should look to see how it could refactor itself to take advantage of these changes. Without digging too deep, the event system currently requires `interface{}` types and casting to known types within binding functions-- can we remove this entirely? Can `Bind` calls take in a parameterized type that would move these checks to compile time?
 
-Based on my understanding of generics I'm honestly not optimistic about this-- methods cannot be paramaterized and we do not want to associate a single type with the event bus / event handler construct, but maybe we can do something clever and hide that cleverness in a way that it doesn't make the library difficult to use.
+Based on my understanding of generics I'm honestly not optimistic about this-- methods cannot be parameterized and we do not want to associate a single type with the event bus / event handler construct, but maybe we can do something clever and hide that cleverness in a way that it doesn't make the library difficult to use.
 
 #### OSX ARM Support
 
@@ -167,6 +167,6 @@ My name is Patrick Stephen in [The Physical World](https://en.wikipedia.org/wiki
 
 I've been working on Oak since 2016, however much work at any time depending on whether I was receiving payment to work on something else instead for 40 hours. As of Feb 1 2022 the name of that entity is [strongDM](https://www.strongdm.com/).
 
-Earlier I've worked on smaller projects, discoverable via github, that are more scientific-- evolutionary computation, computational geometry, and extensible language theory as notable callouts. These fall as a third priority on my list, however, behind work that keeps my family eating and work on Oak (Oak being work that roughly got me enough miniscule notoriety to provide the previous eating-providing work).
+Earlier I've worked on smaller projects, discoverable via github, that are more scientific-- evolutionary computation, computational geometry, and extensible language theory as notable call-outs. These fall as a third priority on my list, however, behind work that keeps my family eating and work on Oak (Oak being work that roughly got me enough miniscule notoriety to provide the previous eating-providing work).
 
 If you'd like to reach out to me you may do so via: patrick.d.stephen@gmail.com
