@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8" />
+<title>State of Oak: February 2022</title>
+
+
+  
+
+
+
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  href="http://200sc.devindex.xml"
+  title="200sc.dev"
+/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="State of Oak: February 2022"/>
+<meta name="twitter:description" content="What is this Writing; Why am I writing it See Last month&rsquo;s blog post
+What&rsquo;s new this month  Audio System Rework Calculator App New game on Itch  Audio System Rework We&rsquo;ve got an under review PR overhauling the audio system. The primary change in this system is the switch from a audio system which requires the audio be loaded in memory to a reader/writer interface that works with in memory data or streaming data or dynamic audio data."/>
+
+
+
+<link rel="stylesheet" href="http://200sc.devfontawesome/css/all.min.css" />
+
+
+
+
+<link
+  crossorigin="anonymous"
+  href="/css/styles.min.css"
+  integrity=""
+  rel="preload stylesheet"
+  as="style"
+/>
+
+
+
+
+<link
+  id="dark-mode-theme"
+  crossorigin="anonymous"
+  href="/css/dark.min.css"
+  integrity=""
+  rel="preload stylesheet"
+  as="style"
+/>
+
+
+<script>
+  var darkTheme = document.getElementById('dark-mode-theme')
+  var storedTheme = localStorage.getItem('dark-mode-storage')
+
+  if (storedTheme === 'dark') {
+    darkTheme.disabled = false
+  } else if (storedTheme === 'light') {
+    darkTheme.disabled = true
+  }
+</script>
+
+
+<script defer crossorigin="anonymous" src="/js/theme.js" integrity=""></script>
+
+
+<script defer crossorigin="anonymous" src="/js/instantpage.min.js" integrity=""></script><meta name="generator" content="Hugo 0.92.1" />
+  </head>
+  <body>
+    
+  
+
+
+
+
+  <header>
+    <nav class="navbar">
+  <div class="nav">
+    
+
+    <ul class="nav-links">
+      
+    </ul>
+  </div>
+</nav>
+
+    <div class="intro-header">
+      <div class="container">
+        <div class="posts-heading">
+          
+            <h1>
+              State of Oak: February 2022
+            </h1>
+          
+          
+        </div>
+      </div>
+    </div>
+  </header>
+  
+
+    
+  <div class="container" role="main">
+    <article class="article" class="blog-post">
+      
+  <h2 id="what-is-this-writing-why-am-i-writing-it">What is this Writing; Why am I writing it</h2>
+<p>See <a href="https://www.200sc.dev/posts/oak-jan-2022/">Last month&rsquo;s blog post</a></p>
+<h2 id="whats-new-this-month">What&rsquo;s new this month</h2>
+<ul>
+<li>Audio System Rework</li>
+<li>Calculator App</li>
+<li>New game on Itch</li>
+</ul>
+<h3 id="audio-system-rework">Audio System Rework</h3>
+<p>We&rsquo;ve got an under review <a href="https://github.com/oakmound/oak/pull/191">PR</a> overhauling the audio system. The primary change in this system is the switch from a audio system which requires the audio be loaded in memory to a reader/writer interface that works with in memory data or streaming data or dynamic audio data.</p>
+<p>On Windows, we&rsquo;re still using DirectSound and it is still serving us very well&ndash; it makes sense to me using these libraries how Windows became the primary target for games: they built a lot of good stable APIs that made this type of thing not that bad. On Linux we&rsquo;ve switched to pulseaudio and it has some strange behavior, but we&rsquo;re planning on splitting out the system to support multiple backends before the PR is done, and alsa will likely be brought in as an alternative. Pulseaudio also works on OSX, and is much more feasible to do without diving into more C variant languages than any of Apple&rsquo;s built-in audio APIs.</p>
+<p>This work should be merged in the coming days, unless a serious refactor or big new idea comes up.</p>
+<h3 id="calculator-app">Calculator App</h3>
+<p>I wrote a <a href="https://github.com/200sc/oakcalc">calculator app</a> in oak, mostly as a vehicle for working with buttons and working on a title-bar component. The titlebar component is designed to be robust and extensible but we&rsquo;ll have to see as we go along if that holds water. The other interesting note about this is that you may be surprised how much planning needs to go into a calculator in terms of parsing arithmetic. There are obviously shortcuts (if you&rsquo;re in a interpreted language, just <code>eval</code> the math given and cross your fingers the user didn&rsquo;t input anything crazy). <a href="https://github.com/200sc/oakcalc/blob/main/internal/arith/arith.go#L149">This implementation</a> includes the usual shortcuts you might expect from an example project that didn&rsquo;t really want to get into language parsing but did anyway&ndash; no floating point or big rational math, just integers, and no smart parsing of parentheses&ndash; just pre-read entire paren bodies up front and then parse the inner elements.</p>
+<p>A fun read, still.</p>
+<h3 id="new-game-on-itch">New Game on Itch</h3>
+<p>Oakmound Studio has put out a new small game that started as a space themed Oregon Trail, then realized that maybe Oregon Trail isn&rsquo;t that fun if you aren&rsquo;t in a classroom and the pun &ldquo;Orion Trail&rdquo; is already taken&ndash; all the way swerving through a couple different genres until it landed at a daily picross game with sokoban controls: <a href="https://oakmound.itch.io/sokopic">Sokopic</a>. (Crossed fingers no one has used that name yet, as it&rsquo;s actually not that bad of a game title). It&rsquo;s not open source right now, but it&rsquo;s got a fun picross solver used to generate daily levels and is a pretty good time (I think (I&rsquo;m gonna play it at least)).</p>
+<p>(Oakmound Studio is myself, <a href="https://github.com/Implausiblyfun">ImplausiblyFun</a>, and <a href="https://github.com/lightningfenrir">LightningFenrir</a>)</p>
+<h2 id="what-does-it-look-like-is-coming-up-maybe-before-the-next-month-has-ended">What does it look like is coming up maybe before the next month has ended</h2>
+<h3 id="grid-based-super-engine">Grid-based Super Engine</h3>
+<p>A lot of games, it turns out, are built around grids. Most puzzle games, a lot of rogue likes, a lot of early RPGs, tactics games, and so on. We&rsquo;ve built two games this year, Viertris and now Sokopic, that are primarily built around grid interfaces, and I think its time we make a super engine on top of Oak that is specifically for everything you&rsquo;d ever want in a grid based game.</p>
+<p>This engine should (hopefully):</p>
+<ul>
+<li>Manage the size of the grid for you</li>
+<li>Manage the types of things or tiles that can go in the grid</li>
+<li>Manage how the things in the grid can interact with other things in the grid</li>
+<li>Manage how things in the grid accept user input</li>
+<li>Manage pausing</li>
+<li>Manage events</li>
+</ul>
+<p>So that&rsquo;s something we&rsquo;re going to look at. The test of this is theoretically, once this super engine exists, a. does it interact cleanly with oak in a way that isn&rsquo;t magical; that feels like Go and like Oak and b. can we write a rougelike in it without much struggle?</p>
+<h3 id="generics">Generics</h3>
+<p>We&rsquo;ve done some spiking with generics:</p>
+<ul>
+<li>Events are promising. We could theoretically make every event in Oak strongly typed, without breaking backwards compatibility. Relevant issue for discussion <a href="https://github.com/oakmound/oak/issues/192">here</a></li>
+<li>Geometry is also theoretically promising, but so far not as much as events, as much of our functions in the geometry libraries rely on specific information about the types present. Floating point epsilon equality and operations which require negative numbers are some examples.</li>
+</ul>
+<h3 id="osx-arm-support">OSX ARM Support</h3>
+<p>This was on last month&rsquo;s list and it&rsquo;s still on this month&rsquo;s list&ndash; I&rsquo;ve done marginal work with ARM and OSX and the primary thing noticed so far is that it appears to have deprecated some metal color schemes, forcing oak to currently use BRGA where it thinks its using RGBA. Unless Apple really did drop support for RGBA encoded color this should just be some API digging, forking of metal libraries, and ~done.</p>
+<h3 id="in-progress-bird-based-platformer">In progress bird based platformer</h3>
+<p>I started and half finished a flappy bird controlled platformer with a simple aesthetic and goal of&ndash; just get some coins and reach the end in a low pressure environment</p>
+<h2 id="thanks-for-reading">Thanks for Reading</h2>
+<p>I do genuinely appreciate time spent reading this, if you are using or thinking about using Oak do not hesitate to reach out with questions or suggestions.</p>
+<h2 id="also-who-am-i-aka-about-the-author">Also Who am I (AKA About the Author)</h2>
+<p>(I am the same person I was last month, if you&rsquo;ve already read about who I am)</p>
+<p>My name is Patrick Stephen in <a href="https://en.wikipedia.org/wiki/Earth">The Physical World</a> and <a href="https://github.com/200sc/">200sc</a> in <a href="https://digimon.fandom.com/wiki/Digital_World">The Digital World</a>.</p>
+<p>I&rsquo;ve been working on Oak since 2016, however much work at any time depending on whether I was receiving payment to work on something else instead for 40 hours. As of Feb 1 2022 the entity doing that is <a href="https://www.strongdm.com/">strongDM</a>.</p>
+<p>Earlier I&rsquo;ve worked on smaller projects, discoverable via github, that are more scientific&ndash; evolutionary computation, computational geometry, and extensible language theory as notable call-outs. These fall as a third priority on my list, however, behind work that keeps my family eating and work on Oak (Oak being work that roughly got me enough miniscule notoriety to provide the previous eating-providing work).</p>
+<p>If you&rsquo;d like to reach out to me you may do so via: <a href="mailto:patrick.d.stephen@gmail.com">patrick.d.stephen@gmail.com</a></p>
+
+
+
+
+      
+    </article>
+    
+    
+      
+
+    
+  </div>
+
+    <footer>
+  
+
+<div class="social-icons">
+  
+
+  
+</div>
+
+
+  
+  <div class="container">
+    <p class="credits copyright">
+      <a href="http://200sc.devabout"></a>
+      &nbsp;&copy;
+      2022
+      
+        &nbsp;/&nbsp;
+        <a href="http://200sc.dev">200sc.dev</a>
+      
+      &nbsp;&ndash;&nbsp;
+      <em class="fas fa-moon" id="dark-mode-toggle"></em>
+    </p>
+
+    <p class="credits theme-by">
+      Powered By <a href="https://gohugo.io">Hugo</a>&nbsp;
+      Theme
+      <a href="https://github.com/matsuyoshi30/harbor">Harbor</a>
+    </p>
+  </div>
+</footer>
+
+  </body>
+</html>

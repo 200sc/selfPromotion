@@ -3,10 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://200sc.dev/</loc>
-    <lastmod>2022-02-01T18:26:02-06:00</lastmod>
+    <lastmod>2022-03-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://200sc.dev/posts/</loc>
-    <lastmod>2022-02-01T18:26:02-06:00</lastmod>
+    <lastmod>2022-03-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://200sc.dev/posts/oak-feb-2022/</loc>
+    <lastmod>2022-03-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://200sc.dev/posts/oak-jan-2022/</loc>
     <lastmod>2022-02-01T18:26:02-06:00</lastmod>

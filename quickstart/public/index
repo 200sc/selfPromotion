@@ -111,6 +111,31 @@
 
       
         <article class="post-preview">
+  <a href="http://200sc.dev/posts/oak-feb-2022/">
+    <h2 class="post-title">State of Oak: February 2022</h2>
+  </a>
+  <div class="post-entry">
+    
+      <p>What is this Writing; Why am I writing it See Last month&rsquo;s blog post
+What&rsquo;s new this month  Audio System Rework Calculator App New game on Itch  Audio System Rework We&rsquo;ve got an under review PR overhauling the audio system. The primary change in this system is the switch from a audio system which requires the audio be loaded in memory to a reader/writer interface that works with in memory data or streaming data or dynamic audio data.</p>
+      <a href="http://200sc.dev/posts/oak-feb-2022/" class="post-read-more"
+        >Read More</a
+      >
+    
+  </div>
+
+  <div class="postmeta">
+    <span class="meta-post">
+  <em class="fa fa-calendar-alt"></em
+  >&nbsp;Mar 1, 2022
+  
+</span>
+
+  </div>
+</article>
+
+      
+        <article class="post-preview">
   <a href="http://200sc.dev/posts/oak-jan-2022/">
     <h2 class="post-title">State of Oak: January 2022</h2>
   </a>
