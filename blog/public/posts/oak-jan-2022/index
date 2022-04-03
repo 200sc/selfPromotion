@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>State of Oak: January 2022 | 200sc.dev</title>
+<meta name="keywords" content="">
+<meta name="description" content="What is this Writing; Why am I writing it What This blog post is meant to be the beginning of a series of posts covering the Oak game engine:
+ What is Oak? Where was Oak at of the end of 2021? What happened to Oak during January 2022? What is happening with Oak going into February 2022?  Followup blog posts will probably not include those first two points, but will include the latter two, with the month incrementing.">
+<meta name="author" content="">
+<link rel="canonical" href="http://200sc.dev/posts/oak-jan-2022/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://200sc.dev/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://200sc.dev/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://200sc.dev/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://200sc.dev/apple-touch-icon.png">
+<link rel="mask-icon" href="http://200sc.dev/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="State of Oak: January 2022" />
+<meta property="og:description" content="What is this Writing; Why am I writing it What This blog post is meant to be the beginning of a series of posts covering the Oak game engine:
+ What is Oak? Where was Oak at of the end of 2021? What happened to Oak during January 2022? What is happening with Oak going into February 2022?  Followup blog posts will probably not include those first two points, but will include the latter two, with the month incrementing." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://200sc.dev/posts/oak-jan-2022/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-02-01T18:26:02-06:00" />
+<meta property="article:modified_time" content="2022-02-01T18:26:02-06:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="State of Oak: January 2022"/>
+<meta name="twitter:description" content="What is this Writing; Why am I writing it What This blog post is meant to be the beginning of a series of posts covering the Oak game engine:
+ What is Oak? Where was Oak at of the end of 2021? What happened to Oak during January 2022? What is happening with Oak going into February 2022?  Followup blog posts will probably not include those first two points, but will include the latter two, with the month incrementing."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "http://200sc.dev/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "State of Oak: January 2022",
+      "item": "http://200sc.dev/posts/oak-jan-2022/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "State of Oak: January 2022",
+  "name": "State of Oak: January 2022",
+  "description": "What is this Writing; Why am I writing it What This blog post is meant to be the beginning of a series of posts covering the Oak game engine:\n What is Oak? Where was Oak at of the end of 2021? What happened to Oak during January 2022? What is happening with Oak going into February 2022?  Followup blog posts will probably not include those first two points, but will include the latter two, with the month incrementing.",
+  "keywords": [
+    
+  ],
+  "articleBody": "What is this Writing; Why am I writing it What This blog post is meant to be the beginning of a series of posts covering the Oak game engine:\n What is Oak? Where was Oak at of the end of 2021? What happened to Oak during January 2022? What is happening with Oak going into February 2022?  Followup blog posts will probably not include those first two points, but will include the latter two, with the month incrementing.\nBlog post Version: 1.0.1, Typo fixes\nWhy This blog post serves many purposes:\nFor outsiders to Oak, this writing wants you to look at Oak and try it out It’s a game engine– it’s written in Go and it’s different from other Go game engines because its primary mission is to just be written in Go– right now you can’t avoid C dependencies for targets like OSX or Android, but Windows, WASM and Linux are good and stable without it and if we can find a way to get rid of C we will pursue it. Hopefully that’s interesting enough to give it a look.\nFor those few familiar with Oak, this writing wants to remind you about Oak and feel good about its progress I don’t have anything to put here, scroll down and go read the progress!\nFor the author of this writing, this writing wants to serve as motivation to continue working and advancing your craft Good on you for writing this blog post. Write another one next month, it will be better written, edited, and contain more interesting things to share because you’ll have done a lot of good work in February. Keep up the good work, but don’t neglect reading books or studying languages or spending time with your family or doing the dishes.\nOak  Oak in 2021  At the end of 2021 Oak’s most recent milestones were:\n Oak 3.0.0 in September: Multi Window Oak 3.1.0 in October: WASM+JS Oak 3.2.0 In December: Rendering optimizations  We’d overhauled the APIs of almost every package in Oak to remove global state, sort of. If one was to completely remove global state from the engine you’d turn code like this:\ntxt := render.NewText(\"Hello World\", x, y) render.Draw(txt) Into:\nvar ctx scene.Context fnt, err := render.NewFont({Size:10,Color:color.RGBA{255,255,255,255},DPI:72.0}) if err != nil { logrus.WithErr(err).Error(\"failed to create basic font\") return err } txt := fnt.NewText(\"Hello World\", x, y) ctx.DrawStack.Draw(txt) So Oak does both: it provides a render.DefaultFont function and exports all the methods on the font as functions of the render package, for times when you just want to use the basic font, and likewise moves functions from Default$Foo objects or constructors to the top of most packages, enabling both ease of use and specialized use for when programs start to get bigger and needs become more specific.\nThe mentioned change is the primary enabler of multi-window work; where before all operations were performed on ‘the window’ or ‘the scene that is running’, now Oak programs can be structured to accept contexts which contain information one needs to operate on ‘the scene that this function was called by’.\nWASM and JS was a long sought after goal that other Go game engines had achieved much sooner. Oak’s reluctance to use OpenGL / WebGL for fear of C dependencies made this conversion more difficult, or maybe just made it seem more difficult enough to slow work towards this milestone. Several years ago Oak had functioning JS builds, but they were amazingly slow on every web browser. The addition of optimizations, moving from GopherJS to Go’s built in WASM targets, respecting web browser’s animation request rates, and the introduction of Multi threading in WASM all enabled enough speed ups for Oak to run at a reasonable clip in Firefox and Chrome (and maybe other browsers as well but who’s counting).\nTo prove that we had improved the speed of Oak and the javascript backend for a fairly real game, we built out Dash King, roughly fully releasing it on December 22nd.\n(We is myself, ImplausiblyFun, and LightningFenrir)\nOak in January 2022  Grove We compiled together useful packages from previous Oak projects and built the oakmound/grove package from them– this utility and component library is meant to bootstrap new projects and we hope to continually add more to it as more common needs are found in Oak programs.\nGame Template Along the same lines, We (mostly ImplausiblyFun) put together a template library to build new games from– it comes with integrations for itch and github actions so new builds will be deployed in a playable state with built, downloadable binaries, and sets up packages for some common needs we’ve found. The idea is to fork (or ‘use this template’ as github shows it) the repo and tear it apart to meet your project’s needs.\nViertris With that above game template I put together a Tetris Clone, also on itch. I’m pretty proud of how this came together and how short the code is for a pretty complete rendition of Tetris. (I assume that someone else already named their Tetris clone Viertris but have not looked it up)\nWindows ARM Support By incrementing a library we added ARM support for Windows! Compared to how hard it would have been to do it if we needed to compile C and figure out cross compilers / get a GCC targeting ARM on a windows ARM machine, I think that this demonstrates some value in avoiding C dependencies.\nLinux ARM Support For Linux ARM we had to do a bit more work, forking a library to add in ARM code, and proving that what we did worked was another adventure– we integrated a self hosted runner with github actions that executes every example in Oak on a linux ARM machine demonstrating that each example opens a window and terminates without crashing, and this runner now runs on every build.\nWe can do more with these runners– we can add runners for osx, windows, and linux, amd and arm, fairly easily; and maybe even JS? Maybe mobile in the future?\n  In Progress  Android Support Android support is almost fully complete, with all tried examples functioning. The branch feature/android contains the work in progress, but needs some more work, specifically readme writing for how to actually set up Go to build for Android in 2022 and how to test those built android APKs, etc.\n  Audio Overhaul The audio system underneath oak as it lives currently works pretty OK on windows, for WAV or MP3 files, and has some difficulties on linux that need to be investigated further. Audio on OSX is non-existent, audio on JS and Android is non-existent, and the interface for using audio and using code-generated audio is rough.\nWe may run into barriers with breaking changes here, but we should try to get as far as we can adding and improving existing support.\nOn the Horizon  Btn Refactor Oak currently serves an internal experimental package under entities/x – this package is not beholden to Oak’s semantic versioning guarantees, and there’s a lot of specialized work in there that should probably be moved out to the grove now.\nThe most used of these packages is btn, a fully functional-optionized package for building user interfaces by building tiers of helpers on top of Oak. It needs to grow however, and it is probably growing too big to live right inside of Oak itself. It may even need a big enough pot that it should be oakmound/btn instead of oakmound/grove/btn. This is mostly rambling, but the short of it is the entities and sub packages beneath it need re-evaluating for where they should live.\nAnother Month-Long Game We’ve done Tetris, which honestly could have been done in about a week or a day with enough high speed music and questionably healthy sources of body fuel (and / or negligence of other daily tasks). What’s next? We could maybe make a Mario 1 or Legend of Zelda 1 engine with a level or two without much commitment. If we’re looking to make something that produces reusable components, something grid based like Sokobon or Rogue might lend itself to producing pathing helpers, for example.\nThis is an open question still. Nothing comes to mind immediately as obviously the next example game to make after Tetris.\nMore Utilities I almost finished writing a Calculator before I had to solve parsing math as a language– I’ll probably finish polishing that up and release it this month, and in addition it’d be good to get more app or utility-type programs out there. A text editor or simple web browser is probably too much of a lift; a SQL editor would require also being a text editor. A graphviz or dot viewer / editor would be fairly reasonable, but maybe of limited use. A timer app might be too simple.\nAlso an open question. One way or another, more small (but not miniscule) examples will be built.\nGenerics Go 1.18 is introducing Generics / Parametric Polymorphism (roughly), and Oak should look to see how it could refactor itself to take advantage of these changes. Without digging too deep, the event system currently requires interface{} types and casting to known types within binding functions– can we remove this entirely? Can Bind calls take in a parameterized type that would move these checks to compile time?\nBased on my understanding of generics I’m honestly not optimistic about this– methods cannot be parameterized and we do not want to associate a single type with the event bus / event handler construct, but maybe we can do something clever and hide that cleverness in a way that it doesn’t make the library difficult to use.\nOSX ARM Support Apple is moving all of their Macbooks to ARM so everyone has to follow suite and quick rebuild everything to support ARM64 and AMD64– this has to be spiked out. It may be trivial, it may be that Apple has (again) deprecated an important interface we relied on and this is a big task.\nOak 4? We’ll probably release Oak 4 this year, adjusting the API in a smaller way than we did in Oak 3. The main targets of this refactor would be the audio system, which was almost untouched from Oak 2 to Oak 3, and the driver interface– for backwards compatibility new driver features are added in compile-time safe ways, but we can and should adjust those interfaces now to make them compile time guarantees that, yes, you can call .SetFullscreen(true) on this operating system but if you try building that for JS or Android that’s not going to fly.\nOak 5? If we get enough velocity we may make more major versions of Oak this year but that would require that we\n Get to Oak 4 and Recognize things in Oak 4 that need breaking changes  No API is ever perfect so whether or not we get as far as another major release all depends on how much time and how many eyes Oak gets.\nThanks for Reading I do genuinely appreciate time spent reading this, if you are using or thinking about using Oak do not hesitate to reach out with questions or suggestions.\nAlso Who am I (AKA About the Author)  My name is Patrick Stephen in The Physical World and 200sc in The Digital World.\nI’ve been working on Oak since 2016, however much work at any time depending on whether I was receiving payment to work on something else instead for 40 hours. As of Feb 1 2022 the entity doing that is strongDM.\nEarlier I’ve worked on smaller projects, discoverable via github, that are more scientific– evolutionary computation, computational geometry, and extensible language theory as notable call-outs. These fall as a third priority on my list, however, behind work that keeps my family eating and work on Oak (Oak being work that roughly got me enough miniscule notoriety to provide the previous eating-providing work).\nIf you’d like to reach out to me you may do so via: patrick.d.stephen@gmail.com\n",
+  "wordCount" : "2002",
+  "inLanguage": "en",
+  "datePublished": "2022-02-01T18:26:02-06:00",
+  "dateModified": "2022-02-01T18:26:02-06:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://200sc.dev/posts/oak-jan-2022/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "200sc.dev",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://200sc.dev/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://200sc.dev" accesskey="h" title="200sc.dev (Alt + H)">200sc.dev</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      State of Oak: January 2022
+    </h1>
+    <div class="post-meta"><span title='2022-02-01 18:26:02 -0600 CST'>February 1, 2022</span>
+
+</div>
+  </header> 
+  <div class="post-content"><h2 id="what-is-this-writing-why-am-i-writing-it">What is this Writing; Why am I writing it<a hidden class="anchor" aria-hidden="true" href="#what-is-this-writing-why-am-i-writing-it">#</a></h2>
+<h3 id="what">What<a hidden class="anchor" aria-hidden="true" href="#what">#</a></h3>
+<p>This blog post is meant to be the beginning of a series of posts covering the <a href="https://www.github.com/oakmound/oak">Oak game engine</a>:</p>
+<ul>
+<li>What is Oak?</li>
+<li>Where was Oak at of the end of 2021?</li>
+<li>What happened to Oak during January 2022?</li>
+<li>What is happening with Oak going into February 2022?</li>
+</ul>
+<p>Followup blog posts will probably not include those first two points, but will include the latter two, with the month incrementing.</p>
+<p>Blog post Version: 1.0.1, Typo fixes</p>
+<h3 id="why">Why<a hidden class="anchor" aria-hidden="true" href="#why">#</a></h3>
+<p>This blog post serves many purposes:</p>
+<h4 id="for-outsiders-to-oak-this-writing-wants-you-to-look-at-oak-and-try-it-out">For outsiders to Oak, this writing wants you to look at Oak and try it out<a hidden class="anchor" aria-hidden="true" href="#for-outsiders-to-oak-this-writing-wants-you-to-look-at-oak-and-try-it-out">#</a></h4>
+<p>It&rsquo;s a game engine&ndash; it&rsquo;s written in Go and it&rsquo;s different from other Go game engines because its primary mission is to <strong>just</strong> be written in Go&ndash; right now you can&rsquo;t avoid C dependencies for targets like OSX or Android, but Windows, WASM and Linux are good and stable without it and if we can find a way to get rid of C we will pursue it. Hopefully that&rsquo;s interesting enough to give it a look.</p>
+<h4 id="for-those-few-familiar-with-oak-this-writing-wants-to-remind-you-about-oak-and-feel-good-about-its-progress">For those few familiar with Oak, this writing wants to remind you about Oak and feel good about its progress<a hidden class="anchor" aria-hidden="true" href="#for-those-few-familiar-with-oak-this-writing-wants-to-remind-you-about-oak-and-feel-good-about-its-progress">#</a></h4>
+<p>I don&rsquo;t have anything to put here, scroll down and go read the progress!</p>
+<h4 id="for-the-author-of-this-writing-this-writing-wants-to-serve-as-motivation-to-continue-working-and-advancing-your-craft">For the author of this writing, this writing wants to serve as motivation to continue working and advancing your craft<a hidden class="anchor" aria-hidden="true" href="#for-the-author-of-this-writing-this-writing-wants-to-serve-as-motivation-to-continue-working-and-advancing-your-craft">#</a></h4>
+<p>Good on you for writing this blog post. Write another one next month, it will be better written, edited, and contain more interesting things to share because you&rsquo;ll have done a lot of good work in February. Keep up the good work, but don&rsquo;t neglect reading books or studying languages or spending time with your family or doing the dishes.</p>
+<h2 id="oak-a-nameoak">Oak <!-- raw HTML omitted --><a hidden class="anchor" aria-hidden="true" href="#oak-a-nameoak">#</a></h2>
+<h3 id="oak-in-2021-a-nameoak-in-2021">Oak in 2021 <!-- raw HTML omitted --><a hidden class="anchor" aria-hidden="true" href="#oak-in-2021-a-nameoak-in-2021">#</a></h3>
+<p>At the end of 2021 Oak&rsquo;s most recent <a href="https://github.com/oakmound/oak/releases">milestones</a> were:</p>
+<ol>
+<li>Oak 3.0.0 in September: Multi Window</li>
+<li>Oak 3.1.0 in October: WASM+JS</li>
+<li>Oak 3.2.0 In December: Rendering optimizations</li>
+</ol>
+<p>We&rsquo;d overhauled the APIs of almost every package in Oak to remove global state, sort of. If one was to completely remove global state from the engine you&rsquo;d turn code like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">txt</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">render</span>.<span style="color:#a6e22e">NewText</span>(<span style="color:#e6db74">&#34;Hello World&#34;</span>, <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>) 
+<span style="color:#a6e22e">render</span>.<span style="color:#a6e22e">Draw</span>(<span style="color:#a6e22e">txt</span>)
+</code></pre></div><p>Into:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">scene</span>.<span style="color:#a6e22e">Context</span>
+<span style="color:#a6e22e">fnt</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">render</span>.<span style="color:#a6e22e">NewFont</span>({<span style="color:#a6e22e">Size</span>:<span style="color:#ae81ff">10</span>,<span style="color:#a6e22e">Color</span>:<span style="color:#a6e22e">color</span>.<span style="color:#a6e22e">RGBA</span>{<span style="color:#ae81ff">255</span>,<span style="color:#ae81ff">255</span>,<span style="color:#ae81ff">255</span>,<span style="color:#ae81ff">255</span>},<span style="color:#a6e22e">DPI</span>:<span style="color:#ae81ff">72.0</span>})
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+    <span style="color:#a6e22e">logrus</span>.<span style="color:#a6e22e">WithErr</span>(<span style="color:#a6e22e">err</span>).<span style="color:#a6e22e">Error</span>(<span style="color:#e6db74">&#34;failed to create basic font&#34;</span>)
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span> 
+}
+<span style="color:#a6e22e">txt</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fnt</span>.<span style="color:#a6e22e">NewText</span>(<span style="color:#e6db74">&#34;Hello World&#34;</span>, <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">y</span>)
+<span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">DrawStack</span>.<span style="color:#a6e22e">Draw</span>(<span style="color:#a6e22e">txt</span>)
+</code></pre></div><p>So Oak does both: it provides a <code>render.DefaultFont</code> function and exports all the methods on the font as functions of the <code>render</code> package, for times when you just want to use the basic font, and likewise moves functions from <code>Default$Foo</code> objects or constructors to the top of most packages, enabling both ease of use and specialized use for when programs start to get bigger and needs become more specific.</p>
+<p>The mentioned change is the primary enabler of multi-window work; where before all operations were performed on &lsquo;the window&rsquo; or &lsquo;the scene that is running&rsquo;, now Oak programs can be structured to accept contexts which contain information one needs to operate on &lsquo;the scene that this function was called by&rsquo;.</p>
+<p>WASM and JS was a long sought after goal that other Go game engines had achieved much sooner. Oak&rsquo;s reluctance to use OpenGL / WebGL for fear of C dependencies made this conversion more difficult, or maybe just made it seem more difficult enough to slow work towards this milestone. Several years ago Oak had functioning JS builds, but they were amazingly slow on every web browser. The addition of optimizations, moving from GopherJS to Go&rsquo;s built in WASM targets, respecting web browser&rsquo;s animation request rates, and the introduction of Multi threading in WASM all enabled enough speed ups for Oak to run at a reasonable clip in Firefox and Chrome (and maybe other browsers as well but who&rsquo;s counting).</p>
+<p>To prove that we had improved the speed of Oak and the javascript backend for a fairly real game, we built out <a href="https://oakmound.itch.io/dashking">Dash King</a>, roughly fully releasing it on December 22nd.</p>
+<p>(We is myself, <a href="https://github.com/Implausiblyfun">ImplausiblyFun</a>, and <a href="https://github.com/lightningfenrir">LightningFenrir</a>)</p>
+<h3 id="oak-in-january-2022-a-nameoak-in-january-2022">Oak in January 2022 <!-- raw HTML omitted --><a hidden class="anchor" aria-hidden="true" href="#oak-in-january-2022-a-nameoak-in-january-2022">#</a></h3>
+<h4 id="grove">Grove<a hidden class="anchor" aria-hidden="true" href="#grove">#</a></h4>
+<p>We compiled together useful packages from previous Oak projects and built the <a href="https://www.github.com/oakmound/grove">oakmound/grove</a> package from them&ndash; this utility and component library is meant to bootstrap new projects and we hope to continually add more to it as more common needs are found in Oak programs.</p>
+<h4 id="game-template">Game Template<a hidden class="anchor" aria-hidden="true" href="#game-template">#</a></h4>
+<p>Along the same lines, We (mostly ImplausiblyFun) put together <a href="https://github.com/oakmound/game-template">a template library</a> to build new games from&ndash; it comes with integrations for itch and github actions so new builds will be deployed in a playable state with built, downloadable binaries, and sets up packages for some common needs we&rsquo;ve found. The idea is to fork (or &lsquo;use this template&rsquo; as github shows it) the repo and tear it apart to meet your project&rsquo;s needs.</p>
+<h4 id="viertris">Viertris<a hidden class="anchor" aria-hidden="true" href="#viertris">#</a></h4>
+<p>With that above game template I put together <a href="https://www.github.com/200sc/viertris">a Tetris Clone</a>, also <a href="https://twohundredscythes.itch.io/viertris">on itch</a>. I&rsquo;m pretty proud of how this came together and how short the code is for a pretty complete rendition of Tetris. (I assume that someone else already named their Tetris clone Viertris but have not looked it up)</p>
+<h4 id="windows-arm-support">Windows ARM Support<a hidden class="anchor" aria-hidden="true" href="#windows-arm-support">#</a></h4>
+<p>By <a href="https://github.com/oakmound/oak/pull/184">incrementing a library</a> we added ARM support for Windows! Compared to how hard it would have been to do it if we needed to compile C and figure out cross compilers / get a GCC targeting ARM on a windows ARM machine, I think that this demonstrates some value in avoiding C dependencies.</p>
+<h4 id="linux-arm-support">Linux ARM Support<a hidden class="anchor" aria-hidden="true" href="#linux-arm-support">#</a></h4>
+<p>For Linux ARM we had to do a bit more work, <a href="https://github.com/oakmound/oak/pull/182">forking a library to add in ARM code</a>, and proving that what we did worked was another adventure&ndash; we integrated a self hosted runner with github actions that executes every example in Oak on a linux ARM machine demonstrating that each example opens a window and terminates without crashing, and this runner now runs on every build.</p>
+<p>We can do more with these runners&ndash; we can add runners for osx, windows, and linux, amd and arm, fairly easily; and maybe even JS? Maybe mobile in the future?</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/M0wIq-k2swk" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<h3 id="in-progress-a-namein-progress">In Progress <!-- raw HTML omitted --><a hidden class="anchor" aria-hidden="true" href="#in-progress-a-namein-progress">#</a></h3>
+<h4 id="android-support">Android Support<a hidden class="anchor" aria-hidden="true" href="#android-support">#</a></h4>
+<p>Android support is almost fully complete, with all tried examples functioning. The branch <code>feature/android</code> contains the work in progress, but needs some more work, specifically readme writing for how to actually set up Go to build for Android in 2022 and how to test those built android APKs, etc.</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/aMEzjtXgbV4" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+<h4 id="audio-overhaul">Audio Overhaul<a hidden class="anchor" aria-hidden="true" href="#audio-overhaul">#</a></h4>
+<p>The audio system underneath oak as it lives currently works pretty OK on windows, for WAV or MP3 files, and has some difficulties on linux that <a href="https://github.com/oakmound/oak/issues/131">need to be investigated further</a>. Audio on OSX is non-existent, audio on JS and Android is non-existent, and the interface for using audio and using code-generated audio is rough.</p>
+<p>We may run into barriers with breaking changes here, but we should try to get as far as we can adding and improving existing support.</p>
+<h3 id="on-the-horizon-a-nameon-the-horizon">On the Horizon <!-- raw HTML omitted --><a hidden class="anchor" aria-hidden="true" href="#on-the-horizon-a-nameon-the-horizon">#</a></h3>
+<h4 id="btn-refactor">Btn Refactor<a hidden class="anchor" aria-hidden="true" href="#btn-refactor">#</a></h4>
+<p>Oak currently serves an internal experimental package under <code>entities/x</code> &ndash; this package is not beholden to Oak&rsquo;s semantic versioning guarantees, and there&rsquo;s a lot of specialized work in there that should probably be moved out to the grove now.</p>
+<p>The most used of these packages is <code>btn</code>, a fully functional-optionized package for building user interfaces by building tiers of helpers on top of Oak. It needs to grow however, and it is probably growing too big to live right inside of Oak itself. It may even need a big enough pot that it should be <code>oakmound/btn</code> instead of <code>oakmound/grove/btn</code>. This is mostly rambling, but the short of it is the entities and sub packages beneath it need re-evaluating for where they should live.</p>
+<h4 id="another-month-long-game">Another Month-Long Game<a hidden class="anchor" aria-hidden="true" href="#another-month-long-game">#</a></h4>
+<p>We&rsquo;ve done Tetris, which honestly could have been done in about a week or a day with enough high speed music and questionably healthy sources of body fuel (and / or negligence of other daily tasks). What&rsquo;s next? We could maybe make a Mario 1 or Legend of Zelda 1 engine with a level or two without much commitment. If we&rsquo;re looking to make something that produces reusable components, something grid based like Sokobon or Rogue might lend itself to producing pathing helpers, for example.</p>
+<p>This is an open question still. Nothing comes to mind immediately as obviously the next example game to make after Tetris.</p>
+<h4 id="more-utilities">More Utilities<a hidden class="anchor" aria-hidden="true" href="#more-utilities">#</a></h4>
+<p>I almost finished writing a Calculator before I had to solve parsing math as a language&ndash; I&rsquo;ll probably finish polishing that up and release it this month, and in addition it&rsquo;d be good to get more app or utility-type programs out there. A text editor or simple web browser is probably too much of a lift; a SQL editor would require also being a text editor. A graphviz or dot viewer / editor would be fairly reasonable, but maybe of limited use. A timer app might be too simple.</p>
+<p>Also an open question. One way or another, more small (but not miniscule) examples will be built.</p>
+<h4 id="generics">Generics<a hidden class="anchor" aria-hidden="true" href="#generics">#</a></h4>
+<p>Go 1.18 is introducing Generics / Parametric Polymorphism (roughly), and Oak should look to see how it could refactor itself to take advantage of these changes. Without digging too deep, the event system currently requires <code>interface{}</code> types and casting to known types within binding functions&ndash; can we remove this entirely? Can <code>Bind</code> calls take in a parameterized type that would move these checks to compile time?</p>
+<p>Based on my understanding of generics I&rsquo;m honestly not optimistic about this&ndash; methods cannot be parameterized and we do not want to associate a single type with the event bus / event handler construct, but maybe we can do something clever and hide that cleverness in a way that it doesn&rsquo;t make the library difficult to use.</p>
+<h4 id="osx-arm-support">OSX ARM Support<a hidden class="anchor" aria-hidden="true" href="#osx-arm-support">#</a></h4>
+<p>Apple is moving all of their Macbooks to ARM so everyone has to follow suite and quick rebuild everything to support ARM64 and AMD64&ndash; this has to be spiked out. It may be trivial, it may be that Apple has (again) deprecated an important interface we relied on and this is a big task.</p>
+<h4 id="oak-4">Oak 4?<a hidden class="anchor" aria-hidden="true" href="#oak-4">#</a></h4>
+<p>We&rsquo;ll probably release Oak 4 this year, adjusting the API in a smaller way than we did in Oak 3. The main targets of this refactor would be the audio system, which was almost untouched from Oak 2 to Oak 3, and the driver interface&ndash; for backwards compatibility new driver features are added in compile-time safe ways, but we can and should adjust those interfaces now to make them compile time guarantees that, yes, you can call <code>.SetFullscreen(true)</code> on this operating system but if you try building that for JS or Android that&rsquo;s not going to fly.</p>
+<h4 id="oak-5">Oak 5?<a hidden class="anchor" aria-hidden="true" href="#oak-5">#</a></h4>
+<p>If we get enough velocity we may make more major versions of Oak this year but that would require that we</p>
+<ol>
+<li>Get to Oak 4 and</li>
+<li>Recognize things in Oak 4 that need breaking changes</li>
+</ol>
+<p>No API is ever perfect so whether or not we get as far as another major release all depends on how much time and how many eyes Oak gets.</p>
+<h2 id="thanks-for-reading">Thanks for Reading<a hidden class="anchor" aria-hidden="true" href="#thanks-for-reading">#</a></h2>
+<p>I do genuinely appreciate time spent reading this, if you are using or thinking about using Oak do not hesitate to reach out with questions or suggestions.</p>
+<h2 id="also-who-am-i-aka-about-the-author-a-namealso-who-am-i-aka-about-the-author">Also Who am I (AKA About the Author) <!-- raw HTML omitted --><a hidden class="anchor" aria-hidden="true" href="#also-who-am-i-aka-about-the-author-a-namealso-who-am-i-aka-about-the-author">#</a></h2>
+<p>My name is Patrick Stephen in <a href="https://en.wikipedia.org/wiki/Earth">The Physical World</a> and <a href="https://github.com/200sc/">200sc</a> in <a href="https://digimon.fandom.com/wiki/Digital_World">The Digital World</a>.</p>
+<p>I&rsquo;ve been working on Oak since 2016, however much work at any time depending on whether I was receiving payment to work on something else instead for 40 hours. As of Feb 1 2022 the entity doing that is <a href="https://www.strongdm.com/">strongDM</a>.</p>
+<p>Earlier I&rsquo;ve worked on smaller projects, discoverable via github, that are more scientific&ndash; evolutionary computation, computational geometry, and extensible language theory as notable call-outs. These fall as a third priority on my list, however, behind work that keeps my family eating and work on Oak (Oak being work that roughly got me enough miniscule notoriety to provide the previous eating-providing work).</p>
+<p>If you&rsquo;d like to reach out to me you may do so via: <a href="mailto:patrick.d.stephen@gmail.com">patrick.d.stephen@gmail.com</a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="http://200sc.dev">200sc.dev</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	manualPath := http.Dir(filepath.Join(".", "quickstart", "public"))
+	manualPath := http.Dir(filepath.Join(".", "blog", "public"))
 
 	httpfs := http.FileServer(manualPath)
 	http.Handle("/", httpfs)

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>200sc.dev</title>
+    <link>http://200sc.dev/</link>
+    <description>Recent content on 200sc.dev</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 02 Apr 2022 18:26:02 -0600</lastBuildDate><atom:link href="http://200sc.dev/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>State of Oak: March 2022</title>
+      <link>http://200sc.dev/posts/oak-mar-2022/</link>
+      <pubDate>Sat, 02 Apr 2022 18:26:02 -0600</pubDate>
+      
+      <guid>http://200sc.dev/posts/oak-mar-2022/</guid>
+      <description>What&amp;rsquo;s new this month  Oak V4 Alpha Bark: A grid-based game engine  Oak v4 Alpha Oak v4 alpha 1 is out today, featuring a complete overhaul of the event system, enabled via type parameterization and go 1.18. While we&amp;rsquo;re planning a breaking change, there&amp;rsquo;s several things we already know we want to include:
+Event Overhaul We&amp;rsquo;ve started off by rewriting the event package. There are a lot of changes, but the biggest difference is the use of type parameters to make the binding / triggering interface type safe:</description>
+    </item>
+    
+    <item>
+      <title>State of Oak: February 2022</title>
+      <link>http://200sc.dev/posts/oak-feb-2022/</link>
+      <pubDate>Tue, 01 Mar 2022 18:26:02 -0600</pubDate>
+      
+      <guid>http://200sc.dev/posts/oak-feb-2022/</guid>
+      <description>What is this Writing; Why am I writing it See Last month&amp;rsquo;s blog post
+What&amp;rsquo;s new this month  Audio System Rework Calculator App New game on Itch  Audio System Rework We&amp;rsquo;ve got an under review PR overhauling the audio system. The primary change in this system is the switch from a audio system which requires the audio be loaded in memory to a reader/writer interface that works with in memory data or streaming data or dynamic audio data.</description>
+    </item>
+    
+    <item>
+      <title>State of Oak: January 2022</title>
+      <link>http://200sc.dev/posts/oak-jan-2022/</link>
+      <pubDate>Tue, 01 Feb 2022 18:26:02 -0600</pubDate>
+      
+      <guid>http://200sc.dev/posts/oak-jan-2022/</guid>
+      <description>What is this Writing; Why am I writing it What This blog post is meant to be the beginning of a series of posts covering the Oak game engine:
+ What is Oak? Where was Oak at of the end of 2021? What happened to Oak during January 2022? What is happening with Oak going into February 2022?  Followup blog posts will probably not include those first two points, but will include the latter two, with the month incrementing.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,4 @@
+baseURL = 'http://200sc.dev'
+languageCode = 'en-us'
+title = '200sc.dev'
+theme = "PaperMod"
