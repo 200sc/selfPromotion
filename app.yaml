@@ -1,4 +1,4 @@
-runtime: go116
+runtime: go126
 
 env_variables:
   IN_APP_ENGINE: "true"
