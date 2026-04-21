@@ -19,7 +19,7 @@ func Build() error {
 	if err != nil {
 		return err
 	}
-	err = sh.Run("hugo", "-D")
+	err = sh.Run("hugo", "-D", "--logLevel", "debug")
 	if err != nil {
 		return err
 	}

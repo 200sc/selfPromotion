@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="auto">
+<html lang="en" dir="auto" data-theme="auto">
 
 <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,7 +10,7 @@
 <meta name="description" content="Posts - 200sc.dev">
 <meta name="author" content="">
 <link rel="canonical" href="http://200sc.dev/posts/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.48a18943c2fc15c38a372b8dde1f5e5dc0bc64fa6cb90f5a817d2f8c76b7f3ae.css" integrity="sha256-SKGJQ8L8FcOKNyuN3h9eXcC8ZPpsuQ9agX0vjHa3864=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.47e51c7d8489b002361bac156ce9a0a8776d08c5462c2cee95801efafdd90d35.css" integrity="sha256-R&#43;UcfYSJsAI2G6wVbOmgqHdtCMVGLCzulYAe&#43;v3ZDTU=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://200sc.dev/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://200sc.dev/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://200sc.dev/favicon-32x32.png">
@@ -18,7 +18,8 @@
 <link rel="mask-icon" href="http://200sc.dev/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://200sc.dev/posts/index.xml">
+<link rel="alternate" type="application/rss+xml" href="http://200sc.dev/posts/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://200sc.dev/posts/">
 <noscript>
     <style>
         #theme-toggle,
@@ -36,43 +37,52 @@
                 --secondary: rgb(155, 156, 157);
                 --tertiary: rgb(65, 66, 68);
                 --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
+                --code-block-bg: rgb(46, 46, 51);
                 --code-bg: rgb(55, 56, 62);
                 --border: rgb(51, 51, 51);
+                color-scheme: dark;
             }
 
             .list {
                 background: var(--theme);
             }
 
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
+            .toc {
+                background: var(--entry);
             }
         }
 
     </style>
-</noscript><meta property="og:title" content="Posts" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="http://200sc.dev/posts/" />
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
 
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Posts"/>
-<meta name="twitter:description" content=""/>
+</script><meta property="og:url" content="http://200sc.dev/posts/">
+  <meta property="og:site_name" content="200sc.dev">
+  <meta property="og:title" content="Posts">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="website">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Posts">
 
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  "itemListElement": [, 
+  "itemListElement": [
     {
       "@type": "ListItem",
-      "position":  2 ,
+      "position":  1 ,
       "name": "Posts",
       "item": "http://200sc.dev/posts/"
     }
@@ -80,31 +90,19 @@
 }
 </script>
 </head>
-
 <body class="list" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
+    <header class="header">
+    <nav class="header-nav">
         <div class="logo">
-            <a href="http://200sc.dev" accesskey="h" title="200sc.dev (Alt + H)">200sc.dev</a>
-            <span class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            <a href="http://200sc.dev/" accesskey="h" title="200sc.dev (Alt + H)">200sc.dev</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -118,75 +116,101 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-            </span>
+            </div>
         </div>
-        <ul id="menu">
+        <ul id="menu" class="menu">
         </ul>
     </nav>
 </header>
 <main class="main"> 
 <header class="page-header">
-  <h1>Posts</h1>
+  <h1>
+    Posts
+  </h1>
 </header>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>State of Oak: March 2022
+    <h2 class="entry-hint-parent">AI has another security problem
     </h2>
   </header>
-  <section class="entry-content">
-    <p>What’s new this month  Oak V4 Alpha Bark: A grid-based game engine  Oak v4 Alpha Oak v4 alpha 1 is out today, featuring a complete overhaul of the event system, enabled via type parameterization and go 1.18. While we’re planning a breaking change, there’s several things we already know we want to include:
-Event Overhaul We’ve started off by rewriting the event package. There are a lot of changes, but the biggest difference is the use of type parameters to make the binding / triggering interface type safe:...</p>
-  </section>
+  <div class="entry-content">
+    <p>AI has another security problem We all know about how MCP has fundamental flaws in how it handles authorization, how OpenClaw and its relatives open up local machines to exploits and the whole world of LLMs is a security nightmare𐠒. And we also are now hearing that Mythos, Anthropic’s latest model, can exploit all of the security flaws in all of the software ever and it’s so impressive that it was released ahead of time to everyone important so they could run it themselves and protect themsevelves from the oncoming onslaught of hackers equipped with it.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-04-20 20:00:00 -0600 -0600'>April 20, 2026</span></footer>
+  <a class="entry-link" aria-label="post link to AI has another security problem" href="http://200sc.dev/posts/ai-security-apr-2026/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">State of Oak: March 2022
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> What’s new this month Oak V4 Alpha Bark: A grid-based game engine Oak v4 Alpha Oak v4 alpha 1 is out today, featuring a complete overhaul of the event system, enabled via type parameterization and go 1.18. While we’re planning a breaking change, there’s several things we already know we want to include:
+Event Overhaul We’ve started off by rewriting the event package. There are a lot of changes, but the biggest difference is the use of type parameters to make the binding / triggering interface type safe:
+...</p>
+  </div>
   <footer class="entry-footer"><span title='2022-04-02 18:26:02 -0600 -0600'>April 2, 2022</span></footer>
   <a class="entry-link" aria-label="post link to State of Oak: March 2022" href="http://200sc.dev/posts/oak-mar-2022/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>State of Oak: February 2022
+    <h2 class="entry-hint-parent">State of Oak: February 2022
     </h2>
   </header>
-  <section class="entry-content">
+  <div class="entry-content">
     <p>What is this Writing; Why am I writing it See Last month’s blog post
-What’s new this month  Audio System Rework Calculator App New game on Itch  Audio System Rework We’ve got an under review PR overhauling the audio system. The primary change in this system is the switch from a audio system which requires the audio be loaded in memory to a reader/writer interface that works with in memory data or streaming data or dynamic audio data....</p>
-  </section>
+What’s new this month Audio System Rework Calculator App New game on Itch Audio System Rework We’ve got an under review PR overhauling the audio system. The primary change in this system is the switch from a audio system which requires the audio be loaded in memory to a reader/writer interface that works with in memory data or streaming data or dynamic audio data.
+...</p>
+  </div>
   <footer class="entry-footer"><span title='2022-03-01 18:26:02 -0600 CST'>March 1, 2022</span></footer>
   <a class="entry-link" aria-label="post link to State of Oak: February 2022" href="http://200sc.dev/posts/oak-feb-2022/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>State of Oak: January 2022
+    <h2 class="entry-hint-parent">State of Oak: January 2022
     </h2>
   </header>
-  <section class="entry-content">
+  <div class="entry-content">
     <p>What is this Writing; Why am I writing it What This blog post is meant to be the beginning of a series of posts covering the Oak game engine:
- What is Oak? Where was Oak at of the end of 2021? What happened to Oak during January 2022? What is happening with Oak going into February 2022?  Followup blog posts will probably not include those first two points, but will include the latter two, with the month incrementing....</p>
-  </section>
+What is Oak? Where was Oak at of the end of 2021? What happened to Oak during January 2022? What is happening with Oak going into February 2022? Followup blog posts will probably not include those first two points, but will include the latter two, with the month incrementing.
+...</p>
+  </div>
   <footer class="entry-footer"><span title='2022-02-01 18:26:02 -0600 CST'>February 1, 2022</span></footer>
   <a class="entry-link" aria-label="post link to State of Oak: January 2022" href="http://200sc.dev/posts/oak-jan-2022/"></a>
 </article>
     </main>
     
 <footer class="footer">
-    <span>&copy; 2022 <a href="http://200sc.dev">200sc.dev</a></span>
+        <span>&copy; 2026 <a href="http://200sc.dev/">200sc.dev</a></span> · 
+
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
     </span>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
     </svg>
 </a>
 
 <script>
-    let menu = document.getElementById('menu')
+    let menu = document.getElementById('menu');
     if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
         menu.onscroll = function () {
             localStorage.setItem("menu-scroll-position", menu.scrollLeft);
         }
@@ -213,25 +237,25 @@ What’s new this month  Audio System Rework Calculator App New game on Itch  Au
 
 </script>
 <script>
-    var mybutton = document.getElementById("top-link");
+    var toplink = document.getElementById("top-link");
     window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
         } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
+            toplink.classList.add("hidden");
         }
     };
 
 </script>
 <script>
     document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
             localStorage.setItem("pref-theme", 'light');
         } else {
-            document.body.classList.add('dark');
+            html.dataset.theme = 'dark';
             localStorage.setItem("pref-theme", 'dark');
         }
     })
