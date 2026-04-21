@@ -49,7 +49,7 @@ int32" or "user input from CLI flags can be provided to this API endpoint".
 What does this mean for software? It means that large open source projects are
 still the best place to put your trust, and it also reveals a chink in the 
 armor of Schrödinger's AI bubble: if it is true that LLMs can find security 
-problems in exchange for nominal funds, and if persists that LLMs will produce
+problems in exchange for nominal funds, and if it persists that LLMs will produce
 large pieces of software by themselves with minimal or no human review, then the
 only programs that will be safe will be those which are not written by LLMs and
 which go through extensive human review. And the best match for those 
