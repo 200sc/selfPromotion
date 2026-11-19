@@ -12,7 +12,7 @@ One thing I've noticed working in a Go / Typescript monorepo for the last severa
 
 If we followed a boring axiom like, [a little copying is better than a little dependency](https://www.youtube.com/watch?v=PAAkCSZUG1c&t=568s), we'd see a lot fewer of these. Most of these vulnerabilities are in edge case functionality which we have no intention of using; stop importing the dependency, just take what you need, and you'll be a lot happier. This is boring, mundane work. 
 
-Another way you might see these recent security problems, is if a dependency gets taken over by a malicious actor and updated to include malware. This is a python and javascript problem which you should never see in Go, because you should be vendoring your dependencies and only updating them as needed. Again, it's not very exciting to copy your dependencies into your source code, but it makes build more reliable and removes various kinds of security problems. 
+Another way you might see these recent security problems, is if a dependency gets taken over by a malicious actor and updated to include malware. This is a python and javascript problem which you should never see in Go, because you should be vendoring your dependencies and only updating them as needed. Again, it's not very exciting to copy your dependencies into your source code, but it makes builds more reliable and removes various kinds of security problems. 
 
 Imagine a test for our technical decisions: what is the most boring thing we could do? 
 
