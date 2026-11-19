@@ -16,13 +16,19 @@ Another way you might see these recent security problems, is if a dependency get
 
 Imagine a test for our technical decisions: what is the most boring thing we could do? 
 
-What database should we use? What's the most boring thing we could do? Postgres.
-How should we host our server? What's the most boring thing we could do? Docker in a stable cloud (AWS, GCP)
-How should our app be configured? Most Boring? Env variables.
-How should our server handle restarts for long running jobs? Most Boring? Just turn the server off and on and restart the whole job. When this stops working, do a little bit more.
-How big should our PRs be? Most Boring? As small as possible.
-How much should we write to document the code? Most Boring? As little as possible, the code should be understandable already.
-How big should our issues be? Only so long as they need to be to define the problem or requirements, and no longer. 
+- What database should we use? What's the most boring thing we could do? Postgres.
+
+- How should we host our server? What's the most boring thing we could do? Docker in a stable cloud (AWS, GCP)
+
+- How should our app be configured? Most Boring? Env variables.
+
+- How should our server handle restarts for long running jobs? Most Boring? Just turn the server off and on and restart the whole job. When this stops working, do a little bit more.
+
+- How big should our PRs be? Most Boring? As small as possible.
+
+- How much should we write to document the code? Most Boring? As little as possible, the code should be understandable already.
+
+- How big should our issues be? Only so long as they need to be to define the problem or requirements, and no longer. 
 
 Boring, or as its sometimes referenced, simple tech isn't worse or less useful or less intelligent than other tech. [Simplicity is complicated](https://go.dev/talks/2015/simplicity-is-complicated.slide#1). [Perfection is attained not when there is nothing more to add, but when there is nothing more to remove](https://en.wikiquote.org/wiki/Antoine_de_Saint-Exup%C3%A9ry).  
 
