@@ -15,7 +15,10 @@ import (
 func Build() error {
 	wd, _ := os.Getwd()
 	fmt.Println(wd)
-	err := os.Chdir(filepath.Join(filepath.Dir(wd), "blog"))
+	if !strings.HasSuffix(wd, "selfPromotion") {
+		wd = filepath.Dir(wd)
+	}
+	err := os.Chdir(filepath.Join(wd, "blog"))
 	if err != nil {
 		return err
 	}
